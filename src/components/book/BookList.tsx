@@ -1,4 +1,6 @@
 import { type Book } from "../../utils/types";
+import { db } from "../../firebase/config";
+import { doc, deleteDoc } from "firebase/firestore";
 
 type BookListProps = {
   books: Book[];
@@ -6,7 +8,9 @@ type BookListProps = {
 
 function BookList({ books }: BookListProps) {
   const handleClick = async (id: string) => {
-    console.log(id);
+    const ref = doc(db, "books", id);
+
+    await deleteDoc(ref);
   };
 
   return (
