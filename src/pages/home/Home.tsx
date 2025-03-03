@@ -1,24 +1,8 @@
-import { useEffect, useState } from "react";
 import { Navbar, BookList, BookForm } from "../../components";
-import { db } from "../../firebase/config";
-import { collection, getDocs } from "firebase/firestore";
-import { type Book } from "../../utils/types";
+import { useCollection } from "../../hooks/useCollection";
 
 export default function Home() {
-  const [books, setBooks] = useState<Book[] | null>(null);
-
-  useEffect(() => {
-    const ref = collection(db, "books");
-
-    getDocs(ref).then((snapshot) => {
-      const results: Book[] = [];
-      snapshot.docs.forEach((doc) => {
-        results.push({ id: doc.id, ...(doc.data() as Omit<Book, "id">) });
-      });
-
-      setBooks(results);
-    });
-  }, []);
+  const { documents: books } = useCollection("books");
 
   return (
     <div className="max-w-screen-sm mx-auto my-0">
