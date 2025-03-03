@@ -1,4 +1,4 @@
-import { Form, Link } from "react-router";
+import { Link } from "react-router";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { SubmitBtn, FormInput } from "@/components";
@@ -11,7 +11,7 @@ function Signup() {
           <CardTitle className="text-center">Signup</CardTitle>
         </CardHeader>
         <CardContent>
-          <Form method="post">
+          <form>
             <FormInput type="text" name="username" />
             <FormInput type="email" name="email" />
             <FormInput type="password" name="password" />
@@ -23,7 +23,7 @@ function Signup() {
                 <Link to="/login">Login</Link>
               </Button>
             </p>
-          </Form>
+          </form>
         </CardContent>
       </Card>
     </section>
