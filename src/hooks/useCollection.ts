@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { db } from "../firebase/config";
+import { db } from "@/firebase/config";
 import { collection, onSnapshot } from "firebase/firestore";
-import { type Book } from "../utils/types";
+import { type Book } from "@/utils/types";
 
 export const useCollection = (c: string) => {
     const [documents, setDocuments] = useState<Book[] | null>(null);

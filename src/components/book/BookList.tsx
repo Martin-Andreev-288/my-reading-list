@@ -1,5 +1,5 @@
-import { type Book } from "../../utils/types";
-import { db } from "../../firebase/config";
+import { type Book } from "@/utils/types";
+import { db } from "@/firebase/config";
 import { doc, deleteDoc } from "firebase/firestore";
 
 type BookListProps = {
