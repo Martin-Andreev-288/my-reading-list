@@ -1,10 +1,16 @@
 import { useState } from "react";
+import { db } from "../../firebase/config";
+import { collection, addDoc } from "firebase/firestore";
 
 function BookForm() {
   const [newBook, setNewBook] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    await addDoc(collection(db, "books"), {
+      title: newBook,
+    });
 
     setNewBook("");
   };
