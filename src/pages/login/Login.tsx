@@ -2,8 +2,19 @@ import { Link } from "react-router";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { SubmitBtn, FormInput } from "@/components";
+import { useLogin } from "@/hooks/useLogin";
+import { useState } from "react";
 
 function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { login } = useLogin();
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    login(email, password);
+  };
+
   return (
     <section className="h-screen grid place-items-center">
       <Card className="w-96 bg-muted">
@@ -11,9 +22,21 @@ function Login() {
           <CardTitle className="text-center">Login</CardTitle>
         </CardHeader>
         <CardContent>
-          <form>
-            <FormInput type="email" label="email" name="identifier" />
-            <FormInput type="password" name="password" />
+          <form onSubmit={handleSubmit}>
+            <FormInput
+              type="email"
+              name="identifier"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <FormInput
+              type="password"
+              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
 
             <SubmitBtn text="Login" className="w-full mt-4" />
             <p className="text-center mt-4">
