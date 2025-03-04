@@ -5,3 +5,4 @@ export { default as FormInput } from "./formInput/FormInput";
 export { default as SubmitBtn } from "./submitBtn/SubmitBtn";
 export { default as ProtectedRoute } from "./auth/ProtectedRoute";
 export { default as UnprotectedRoute } from "./auth/UnprotectedRoute";
+export { default as Loader } from "./loader/Loader";

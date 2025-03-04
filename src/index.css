@@ -69,7 +69,19 @@
   }
 }
 
+@layer components {
+  .spinner {
+    @apply h-12 w-12 animate-spin rounded-full border-4;
+    border-color: hsl(var(--border));
+    border-top-color: hsl(var(--primary));
+  }
 
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
 
 @layer base {
   * {
