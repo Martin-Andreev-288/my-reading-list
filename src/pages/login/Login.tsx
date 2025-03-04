@@ -42,7 +42,7 @@ function Login() {
             <p className="text-center mt-4">
               Not a member yet?
               <Button type="button" asChild variant="link">
-                <Link to="/register">Register</Link>
+                <Link to="/signup">Register</Link>
               </Button>
             </p>
           </form>
