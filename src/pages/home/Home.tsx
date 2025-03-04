@@ -12,10 +12,12 @@ export default function Home() {
   ]);
 
   return (
-    <div className="max-w-screen-sm mx-auto my-0">
+    <>
       <Navbar />
-      {books && <BookList books={books} />}
-      <BookForm />
-    </div>
+      <div className="max-w-5xl mx-auto my-0">
+        {books && <BookList books={books} />}
+        <BookForm />
+      </div>
+    </>
   );
 }
