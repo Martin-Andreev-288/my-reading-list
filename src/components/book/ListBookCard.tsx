@@ -13,8 +13,15 @@ function ListBookCard({ book }: { book: Book }) {
     await deleteDoc(ref);
   };
 
+  const progress =
+    book.status === "Finished"
+      ? 100
+      : book.currentPage
+      ? Math.round((book.currentPage / book.totalPages) * 100)
+      : 0;
+
   return (
-    <div className="bg-white p-6 max-w-3xl rounded-lg shadow-md hover:shadow-lg transition-shadow flex items-center justify-between relative">
+    <div className="bg-white p-6 w-full max-w-3xl rounded-lg shadow-md hover:shadow-lg transition-shadow flex items-center justify-between relative">
       {/* Delete Button */}
       <button
         className="absolute top-1 right-1.5 text-gray-400 hover:text-red-600"
@@ -43,6 +50,21 @@ function ListBookCard({ book }: { book: Book }) {
           <p className="text-gray-600">{book.author}</p>
           <p className="text-purple-600">{book.genre}</p>
           <p className="text-gray-500">{book.totalPages} pages</p>
+        </div>
+
+        <div className="m-3">
+          <div className="w-full bg-gray-200 rounded-full h-2">
+            <div
+              className="bg-purple-600 rounded-full h-2"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <div className="flex justify-between text-sm mt-1">
+            <span>Progress: {progress}%</span>
+            <span>
+              Page {book.currentPage || 0} of {book.totalPages}
+            </span>
+          </div>
         </div>
 
         {(book.status === "Reading" || book.status === "Not Started") && (

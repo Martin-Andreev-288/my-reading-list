@@ -20,15 +20,15 @@ function BookList({ books }: BookListProps) {
           {isGridView ? "Switch to List" : "Switch to Grid"}
         </button>
       </div>
-
       {isGridView ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-center">
           {books.map((book) => (
             <GridBookCard key={book.id} book={book} />
           ))}
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="flex flex-col items-center space-y-4">
+          {" "}
           {books.map((book) => (
             <ListBookCard key={book.id} book={book} />
           ))}
