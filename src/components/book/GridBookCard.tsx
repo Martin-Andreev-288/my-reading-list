@@ -1,16 +1,93 @@
+import { useState } from "react";
 import { type Book } from "../../utils/types";
 import { toast } from "sonner";
-
 import { db } from "@/firebase/config";
-import { doc, deleteDoc } from "firebase/firestore";
+import { doc, updateDoc, deleteDoc } from "firebase/firestore";
 
-// Grid Card Component
 function GridBookCard({ book }: { book: Book }) {
-  const handleClick = async (id: string) => {
+  const [currentPageInput, setCurrentPageInput] = useState(
+    book.currentPage || 0
+  );
+  const [isUpdating, setIsUpdating] = useState(false);
+
+  const handleUpdateProgress = async (newPage: number) => {
+    try {
+      setIsUpdating(true);
+      const bookRef = doc(db, "books", book.id);
+
+      // Determine new status based on pages
+      let newStatus: Book["status"] = "Reading";
+      if (newPage === 0) newStatus = "Not Started";
+      if (newPage >= book.totalPages) newStatus = "Finished";
+
+      await updateDoc(bookRef, {
+        currentPage: newPage,
+        status: newStatus,
+      });
+
+      toast.success("Progress updated successfully!");
+    } catch (error) {
+      toast.error("Failed to update progress");
+      console.error(error);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
     const ref = doc(db, "books", id);
 
-    toast("Book deleted successfully!");
+    toast.success("Book deleted successfully!");
     await deleteDoc(ref);
+  };
+
+  const getNextStatus = (): Book["status"] => {
+    switch (book.status) {
+      case "Not Started":
+        return "Reading";
+      case "Reading":
+        return "Finished";
+      case "Finished":
+        return "Not Started";
+      default:
+        return "Not Started";
+    }
+  };
+
+  const handleMarkStatus = async () => {
+    try {
+      const bookRef = doc(db, "books", book.id);
+      let newStatus: Book["status"];
+      let newPage: number;
+
+      switch (book.status) {
+        case "Not Started":
+          newStatus = "Reading";
+          newPage = 1;
+          break;
+        case "Reading":
+          newStatus = "Finished";
+          newPage = book.totalPages;
+          break;
+        case "Finished":
+          newStatus = "Not Started";
+          newPage = 0;
+          break;
+        default:
+          newStatus = "Not Started";
+          newPage = 0;
+      }
+
+      await updateDoc(bookRef, {
+        status: newStatus,
+        currentPage: newPage,
+      });
+
+      toast.success("Status updated successfully!");
+    } catch (error) {
+      toast.error("Failed to update status");
+      console.error(error);
+    }
   };
 
   const progress =
@@ -25,7 +102,7 @@ function GridBookCard({ book }: { book: Book }) {
       {/* Delete Button */}
       <button
         className="absolute top-2 right-2 text-gray-400 hover:text-red-600"
-        onClick={() => handleClick(book.id)}
+        onClick={() => handleDelete(book.id)}
       >
         ×
       </button>
@@ -70,26 +147,32 @@ function GridBookCard({ book }: { book: Book }) {
               type="number"
               min="0"
               max={book.totalPages}
-              value={book.currentPage || 0}
+              value={currentPageInput}
               className="w-20 px-2 py-1 border rounded"
               onChange={(e) => {
                 const value = Math.min(
                   book.totalPages,
                   Math.max(0, parseInt(e.target.value) || 0)
                 );
-                console.log("Update progress:", value);
+                setCurrentPageInput(value);
               }}
+              disabled={isUpdating}
             />
             <button
-              className="text-sm bg-blue-100 px-2 py-1 rounded hover:bg-blue-200"
-              onClick={() => console.log("Save page update")}
+              className="text-sm bg-blue-100 px-2 py-1 rounded hover:bg-blue-200 disabled:opacity-50"
+              onClick={() => handleUpdateProgress(currentPageInput)}
+              disabled={isUpdating}
             >
-              Update
+              {isUpdating ? "Updating..." : "Update"}
             </button>
           </div>
         )}
-        <button className="text-sm bg-purple-100 px-3 py-1 mt-2 rounded hover:bg-purple-200">
-          Mark as {book.status === "Reading" ? "Finished" : "Reading"}
+        <button
+          className="text-sm bg-purple-100 px-3 py-1 mt-2 rounded hover:bg-purple-200 disabled:opacity-50"
+          onClick={handleMarkStatus}
+          disabled={isUpdating}
+        >
+          Mark as {getNextStatus()}
         </button>
       </div>
     </div>
