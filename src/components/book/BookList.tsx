@@ -1,31 +1,39 @@
-import { type Book } from "@/utils/types";
-import { db } from "@/firebase/config";
-import { doc, deleteDoc } from "firebase/firestore";
+import { type Book } from "../../utils/types";
+import { useState } from "react";
+import GridBookCard from "./GridBookCard";
+import ListBookCard from "./ListBookCard";
 
 type BookListProps = {
   books: Book[];
 };
 
 function BookList({ books }: BookListProps) {
-  const handleClick = async (id: string) => {
-    const ref = doc(db, "books", id);
-
-    await deleteDoc(ref);
-  };
+  const [isGridView, setIsGridView] = useState(true);
 
   return (
-    <div className="">
-      <ul>
-        {books.map((book) => (
-          <li
-            className="bg-white list-none cursor-pointer my-2.5 p-2.5"
-            key={book.id}
-            onClick={() => handleClick(book.id)}
-          >
-            {book.title}
-          </li>
-        ))}
-      </ul>
+    <div className="p-4">
+      <div className="flex justify-end mb-4">
+        <button
+          onClick={() => setIsGridView(!isGridView)}
+          className="bg-purple-100 px-4 py-2 rounded-lg"
+        >
+          {isGridView ? "Switch to List" : "Switch to Grid"}
+        </button>
+      </div>
+
+      {isGridView ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {books.map((book) => (
+            <GridBookCard key={book.id} book={book} />
+          ))}
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {books.map((book) => (
+            <ListBookCard key={book.id} book={book} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
