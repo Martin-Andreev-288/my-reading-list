@@ -1,4 +1,5 @@
 import { useState } from "react";
+import BookInputField from "./BookInputField";
 
 import { db } from "@/firebase/config";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
@@ -37,59 +38,36 @@ function BookForm() {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto my-4">
-      <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">Title *</label>
-          <input
-            className="w-full p-2 border rounded"
-            type="text"
-            required
-            value={formData.title}
-            onChange={(e) =>
-              setFormData({ ...formData, title: e.target.value })
-            }
-          />
-        </div>
+      <h2 className="text-center">Add New Book</h2>
+      <div className="space-y-4 pt-3">
+        <BookInputField
+          label="Title"
+          required
+          value={formData.title}
+          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+        />
 
-        <div>
-          <label className="block text-sm font-medium mb-1">Author</label>
-          <input
-            className="w-full p-2 border rounded"
-            type="text"
-            value={formData.author}
-            onChange={(e) =>
-              setFormData({ ...formData, author: e.target.value })
-            }
-          />
-        </div>
+        <BookInputField
+          label="Author"
+          value={formData.author}
+          onChange={(e) => setFormData({ ...formData, author: e.target.value })}
+        />
 
-        <div>
-          <label className="block text-sm font-medium mb-1">Genre</label>
-          <input
-            className="w-full p-2 border rounded"
-            type="text"
-            value={formData.genre}
-            onChange={(e) =>
-              setFormData({ ...formData, genre: e.target.value })
-            }
-          />
-        </div>
+        <BookInputField
+          label="Genre"
+          value={formData.genre}
+          onChange={(e) => setFormData({ ...formData, genre: e.target.value })}
+        />
 
-        <div>
-          <label className="block text-sm font-medium mb-1">
-            Total Pages *
-          </label>
-          <input
-            className="w-full p-2 border rounded"
-            type="number"
-            min="1"
-            required
-            value={formData.totalPages}
-            onChange={(e) =>
-              setFormData({ ...formData, totalPages: e.target.value })
-            }
-          />
-        </div>
+        <BookInputField
+          label="Total Pages"
+          type="number"
+          required
+          value={formData.totalPages}
+          onChange={(e) =>
+            setFormData({ ...formData, totalPages: e.target.value })
+          }
+        />
 
         <button
           type="submit"
