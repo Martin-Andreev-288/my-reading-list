@@ -1,44 +1,30 @@
 import { useState } from "react";
 import { type Book } from "../../utils/types";
-import { toast } from "sonner";
-import { db } from "@/firebase/config";
-import { doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { useBooks } from "@/hooks/useBooks";
 
 function GridBookCard({ book }: { book: Book }) {
   const [currentPageInput, setCurrentPageInput] = useState(
     book.currentPage || 0
   );
   const [isUpdating, setIsUpdating] = useState(false);
+  const { deleteBook, updateProgress, markStatus } = useBooks();
 
-  const handleUpdateProgress = async (newPage: number) => {
+  const handleUpdateProgress = async () => {
+    setIsUpdating(true);
     try {
-      setIsUpdating(true);
-      const bookRef = doc(db, "books", book.id);
-
-      // Determine new status based on pages
-      let newStatus: Book["status"] = "Reading";
-      if (newPage === 0) newStatus = "Not Started";
-      if (newPage >= book.totalPages) newStatus = "Finished";
-
-      await updateDoc(bookRef, {
-        currentPage: newPage,
-        status: newStatus,
-      });
-
-      toast.success("Progress updated successfully!");
-    } catch (error) {
-      toast.error("Failed to update progress");
-      console.error(error);
+      await updateProgress(book.id, currentPageInput, book.totalPages);
     } finally {
       setIsUpdating(false);
     }
   };
 
-  const handleDelete = async (id: string) => {
-    const ref = doc(db, "books", id);
-
-    toast.success("Book deleted successfully!");
-    await deleteDoc(ref);
+  const handleMarkStatus = async () => {
+    setIsUpdating(true);
+    try {
+      await markStatus(book.id, book.status, book.totalPages);
+    } finally {
+      setIsUpdating(false);
+    }
   };
 
   const getNextStatus = (): Book["status"] => {
@@ -54,42 +40,6 @@ function GridBookCard({ book }: { book: Book }) {
     }
   };
 
-  const handleMarkStatus = async () => {
-    try {
-      const bookRef = doc(db, "books", book.id);
-      let newStatus: Book["status"];
-      let newPage: number;
-
-      switch (book.status) {
-        case "Not Started":
-          newStatus = "Reading";
-          newPage = 1;
-          break;
-        case "Reading":
-          newStatus = "Finished";
-          newPage = book.totalPages;
-          break;
-        case "Finished":
-          newStatus = "Not Started";
-          newPage = 0;
-          break;
-        default:
-          newStatus = "Not Started";
-          newPage = 0;
-      }
-
-      await updateDoc(bookRef, {
-        status: newStatus,
-        currentPage: newPage,
-      });
-
-      toast.success("Status updated successfully!");
-    } catch (error) {
-      toast.error("Failed to update status");
-      console.error(error);
-    }
-  };
-
   const progress =
     book.status === "Finished"
       ? 100
@@ -102,7 +52,7 @@ function GridBookCard({ book }: { book: Book }) {
       {/* Delete Button */}
       <button
         className="absolute top-2 right-2 text-gray-400 hover:text-red-600"
-        onClick={() => handleDelete(book.id)}
+        onClick={() => deleteBook(book.id)}
       >
         ×
       </button>
@@ -160,7 +110,7 @@ function GridBookCard({ book }: { book: Book }) {
             />
             <button
               className="text-sm bg-blue-100 px-2 py-1 rounded hover:bg-blue-200 disabled:opacity-50"
-              onClick={() => handleUpdateProgress(currentPageInput)}
+              onClick={handleUpdateProgress}
               disabled={isUpdating}
             >
               {isUpdating ? "Updating..." : "Update"}

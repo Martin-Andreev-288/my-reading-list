@@ -1,12 +1,8 @@
 import { useState } from "react";
 import BookInputField from "./BookInputField";
-
-import { db } from "@/firebase/config";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { useAuthContext } from "@/hooks/useAuthContext";
+import { useBooks } from "@/hooks/useBooks";
 
 function BookForm() {
-  const { user } = useAuthContext();
   const MAX_PAGES = 10000;
 
   const [formData, setFormData] = useState({
@@ -16,26 +12,14 @@ function BookForm() {
     totalPages: "",
   });
 
+  const { addBook } = useBooks();
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    await addDoc(collection(db, "books"), {
-      title: formData.title.trim(),
-      author: formData.author.trim() || "Unknown author",
-      genre: formData.genre.trim(),
-      totalPages: parseInt(formData.totalPages),
-      currentPage: 0,
-      status: "Not Started",
-      uid: user?.uid,
-      createdAt: serverTimestamp(),
-    });
-
-    setFormData({
-      title: "",
-      author: "",
-      genre: "",
-      totalPages: "",
-    });
+    const success = await addBook(formData);
+    if (success) {
+      setFormData({ title: "", author: "", genre: "", totalPages: "" });
+    }
   };
 
   const handleTotalPagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
