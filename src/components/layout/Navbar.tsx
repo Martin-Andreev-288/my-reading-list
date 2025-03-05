@@ -1,7 +1,9 @@
 import { useLogout } from "@/hooks/useLogout";
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 function Navbar() {
   const { logout } = useLogout();
+  const { user } = useAuthContext();
 
   return (
     <nav className="bg-white shadow-sm rounded-lg mx-4 mt-4">
@@ -15,9 +17,9 @@ function Navbar() {
           </div>
 
           <div className="flex items-center space-x-4">
-            <span className="text-gray-600 text-sm">Username</span>
+            <span className="text-gray-600 text-sm">{user?.email}</span>
             <button
-              className="text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors"
+              className="text-gray-600 hover:text-gray-900 hover:underline text-sm font-medium transition-colors"
               onClick={logout}
             >
               Logout
