@@ -21,7 +21,7 @@ function GridBookCard({ book }: { book: Book }) {
       : 0;
 
   return (
-    <div className="bg-white p-8 min-h-64 rounded-lg shadow-md hover:shadow-lg transition-shadow relative">
+    <div className="bg-white p-7 min-h-64 rounded-lg shadow-md hover:shadow-lg transition-shadow relative">
       {/* Delete Button */}
       <button
         className="absolute top-2 right-2 text-gray-400 hover:text-red-600"
@@ -33,7 +33,7 @@ function GridBookCard({ book }: { book: Book }) {
       <div className="flex justify-between items-start mb-2">
         <h3 className="font-bold text-lg truncate">{book.title}</h3>
         <span
-          className={`text-sm px-2 py-1 rounded-full ${
+          className={`text-sm px-1.5 py-1 rounded-full ${
             book.status === "Finished"
               ? "bg-green-100 text-green-800"
               : book.status === "Reading"
