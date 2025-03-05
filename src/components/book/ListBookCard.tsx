@@ -1,4 +1,5 @@
 import { type Book } from "../../utils/types";
+import { toast } from "sonner";
 
 import { db } from "@/firebase/config";
 import { doc, deleteDoc } from "firebase/firestore";
@@ -8,6 +9,7 @@ function ListBookCard({ book }: { book: Book }) {
   const handleClick = async (id: string) => {
     const ref = doc(db, "books", id);
 
+    toast("Book deleted successfully!");
     await deleteDoc(ref);
   };
 
