@@ -7,6 +7,8 @@ import { useAuthContext } from "@/hooks/useAuthContext";
 
 function BookForm() {
   const { user } = useAuthContext();
+  const MAX_PAGES = 10000;
+
   const [formData, setFormData] = useState({
     title: "",
     author: "",
@@ -36,9 +38,18 @@ function BookForm() {
     });
   };
 
+  const handleTotalPagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = parseInt(e.target.value) || 0;
+
+    if (value < 1) value = 1;
+    if (value > MAX_PAGES) value = MAX_PAGES;
+
+    setFormData({ ...formData, totalPages: value.toString() });
+  };
+
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto my-4">
-      <h2 className="text-center">Add New Book</h2>
+      <h2 className="text-center">Add New Book:</h2>
       <div className="space-y-4 pt-3">
         <BookInputField
           label="Title"
@@ -64,9 +75,7 @@ function BookForm() {
           type="number"
           required
           value={formData.totalPages}
-          onChange={(e) =>
-            setFormData({ ...formData, totalPages: e.target.value })
-          }
+          onChange={handleTotalPagesChange}
         />
 
         <button
