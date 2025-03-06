@@ -25,7 +25,7 @@ function Login() {
           <form onSubmit={handleSubmit}>
             <FormInput
               type="email"
-              name="identifier"
+              name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
