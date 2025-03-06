@@ -12,7 +12,7 @@ export const useBooks = () => {
             await addDoc(collection(db, "books"), {
                 title: formData.title.trim(),
                 author: formData.author.trim() || "Unknown author",
-                genre: formData.genre.trim(),
+                genre: formData.genre.trim() || "Unknown genre",
                 totalPages: parseInt(formData.totalPages),
                 currentPage: 0,
                 status: "Not Started",

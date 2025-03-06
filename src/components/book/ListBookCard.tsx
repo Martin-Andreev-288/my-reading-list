@@ -1,16 +1,43 @@
+import { useState } from "react";
 import { type Book } from "../../utils/types";
-import { toast } from "sonner";
+import { useBooks } from "@/hooks/useBooks";
 
-import { db } from "@/firebase/config";
-import { doc, deleteDoc } from "firebase/firestore";
-
-// List Card Component
 function ListBookCard({ book }: { book: Book }) {
-  const handleClick = async (id: string) => {
-    const ref = doc(db, "books", id);
+  const [currentPageInput, setCurrentPageInput] = useState(
+    book.currentPage || 0
+  );
+  const [isUpdating, setIsUpdating] = useState(false);
+  const { deleteBook, updateProgress, markStatus } = useBooks();
 
-    toast("Book deleted successfully!");
-    await deleteDoc(ref);
+  const handleUpdateProgress = async () => {
+    setIsUpdating(true);
+    try {
+      await updateProgress(book.id, currentPageInput, book.totalPages);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const handleMarkStatus = async () => {
+    setIsUpdating(true);
+    try {
+      await markStatus(book.id, book.status, book.totalPages);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const getNextStatus = (): Book["status"] => {
+    switch (book.status) {
+      case "Not Started":
+        return "Reading";
+      case "Reading":
+        return "Finished";
+      case "Finished":
+        return "Not Started";
+      default:
+        return "Not Started";
+    }
   };
 
   const progress =
@@ -25,7 +52,7 @@ function ListBookCard({ book }: { book: Book }) {
       {/* Delete Button */}
       <button
         className="absolute top-1 right-1.5 text-gray-400 hover:text-red-600"
-        onClick={() => handleClick(book.id)}
+        onClick={() => deleteBook(book.id)}
       >
         ×
       </button>
@@ -73,29 +100,35 @@ function ListBookCard({ book }: { book: Book }) {
               type="number"
               min="0"
               max={book.totalPages}
-              value={book.currentPage || 0}
+              value={currentPageInput}
               className="w-20 px-2 py-1 border rounded"
               onChange={(e) => {
                 const value = Math.min(
                   book.totalPages,
                   Math.max(0, parseInt(e.target.value) || 0)
                 );
-                console.log("Update progress:", value);
+                setCurrentPageInput(value);
               }}
+              disabled={isUpdating}
             />
             <button
               className="text-sm bg-blue-100 px-2 py-1 rounded hover:bg-blue-200"
-              onClick={() => console.log("Save page update")}
+              onClick={handleUpdateProgress}
+              disabled={isUpdating}
             >
-              Set Page
+              {isUpdating ? "Updating Page..." : "Update Page"}
             </button>
           </div>
         )}
       </div>
 
       <div className="flex flex-col gap-2 ml-4">
-        <button className="text-sm bg-purple-100 px-3 py-1 rounded hover:bg-purple-200">
-          {book.status === "Reading" ? "Mark Finished" : "Start Reading"}
+        <button
+          className="text-sm bg-purple-100 px-3 py-1 rounded hover:bg-purple-200"
+          onClick={handleMarkStatus}
+          disabled={isUpdating}
+        >
+          Mark as {getNextStatus()}
         </button>
       </div>
     </div>
