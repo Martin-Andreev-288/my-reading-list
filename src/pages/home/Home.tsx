@@ -2,8 +2,8 @@ import { Navbar, BookList, BookForm } from "@/components";
 import { Button } from "@/components/ui/button";
 import { FaPlus } from "react-icons/fa";
 
-import { useCollection } from "@/hooks/useCollection";
-import { useAuthContext } from "@/hooks/useAuthContext";
+import { useCollection } from "@/serviceHooks/useCollection";
+import { useAuthContext } from "@/serviceHooks/useAuthContext";
 
 export default function Home() {
   const { user } = useAuthContext();

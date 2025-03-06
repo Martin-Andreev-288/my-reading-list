@@ -13,12 +13,12 @@ export const useLogout = () => {
         signOut(auth)
             .then(() => {
                 dispatch({ type: "LOGOUT" });
-                toast('Logout successful!');
+                toast.success('Logout successful!');
                 return navigate("/login");
             })
             .catch((err) => {
                 console.log(err);
-                toast(err.code);
+                toast.error(err.code);
             });
     }
 

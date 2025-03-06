@@ -13,12 +13,12 @@ export const useLogin = () => {
         signInWithEmailAndPassword(auth, email, password)
             .then((res) => {
                 dispatch({ type: "LOGIN", payload: res.user });
-                toast('Login successful!');
+                toast.success('Login successful!');
                 return navigate("/");
             })
             .catch((err) => {
                 console.log(err);
-                toast(err.code);
+                toast.error(err.code);
             })
     }
 

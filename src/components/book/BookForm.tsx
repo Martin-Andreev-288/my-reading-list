@@ -1,6 +1,6 @@
 import { useState } from "react";
 import BookInputField from "./BookInputField";
-import { useBooks } from "@/hooks/useBooks";
+import { useBooks } from "@/serviceHooks/useBooks";
 
 function BookForm() {
   const MAX_PAGES = 10000;

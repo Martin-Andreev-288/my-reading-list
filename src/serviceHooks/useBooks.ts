@@ -1,4 +1,4 @@
-import { useAuthContext } from "@/hooks/useAuthContext";
+import { useAuthContext } from "@/serviceHooks/useAuthContext";
 import { db } from "@/firebase/config";
 import { addDoc, collection, deleteDoc, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { toast } from "sonner";

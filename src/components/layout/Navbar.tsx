@@ -1,5 +1,5 @@
-import { useLogout } from "@/hooks/useLogout";
-import { useAuthContext } from "@/hooks/useAuthContext";
+import { useLogout } from "@/serviceHooks/useLogout";
+import { useAuthContext } from "@/serviceHooks/useAuthContext";
 
 function Navbar() {
   const { logout } = useLogout();

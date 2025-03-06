@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { type Book } from "../../utils/types";
-import { useBooks } from "@/hooks/useBooks";
+import { useBooks } from "@/serviceHooks/useBooks";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 

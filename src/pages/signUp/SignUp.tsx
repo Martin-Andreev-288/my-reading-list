@@ -2,7 +2,7 @@ import { Link } from "react-router";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { SubmitBtn, FormInput } from "@/components";
-import { useSignup } from "@/hooks/useSignup";
+import { useSignup } from "@/serviceHooks/useSignup";
 import { useState } from "react";
 
 function Signup() {
