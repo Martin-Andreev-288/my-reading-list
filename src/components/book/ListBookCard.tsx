@@ -1,13 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { type Book } from "../../utils/types";
 import { useBooks } from "@/hooks/useBooks";
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 
 function ListBookCard({ book }: { book: Book }) {
   const [currentPageInput, setCurrentPageInput] = useState(
     book.currentPage || 0
   );
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { deleteBook, updateProgress, markStatus } = useBooks();
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        !(e.target as Element).closest(".menu-container") &&
+        !(e.target as Element).closest(".menu-button")
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
 
   const handleUpdateProgress = async () => {
     setIsUpdating(true);
@@ -50,12 +67,52 @@ function ListBookCard({ book }: { book: Book }) {
   return (
     <div className="bg-white p-6 w-full max-w-3xl rounded-lg shadow-md hover:shadow-lg transition-shadow flex items-center justify-between relative">
       {/* Delete Button */}
-      <button
-        className="absolute top-1 right-1.5 text-gray-400 hover:text-red-600"
-        onClick={() => deleteBook(book.id)}
-      >
-        ×
-      </button>
+      {/* Top Action Menu */}
+      <div className="absolute top-1.5 right-0 menu-container">
+        <button
+          className="menu-button text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
+            />
+          </svg>
+        </button>
+
+        {isMenuOpen && (
+          <div className="absolute right-2 mt-0 w-32 bg-white rounded-md shadow-lg py-1 z-10 border border-gray-100">
+            <button
+              className="w-full px-4 py-2 text-sm text-left hover:bg-gray-100 flex items-center"
+              onClick={() => {
+                console.log("Edit clicked");
+                setIsMenuOpen(false);
+              }}
+            >
+              <FaEdit className="mr-2 text-gray-600" />
+              Edit
+            </button>
+            <button
+              className="w-full px-4 py-2 text-sm text-left hover:bg-gray-100 text-red-600 flex items-center"
+              onClick={() => {
+                deleteBook(book.id);
+                setIsMenuOpen(false);
+              }}
+            >
+              <MdDelete className="mr-2 text-red-600" />
+              Delete
+            </button>
+          </div>
+        )}
+      </div>
       <span
         className={`absolute top-6 right-8 text-sm px-2 py-1 rounded-full ${
           book.status === "Finished"
