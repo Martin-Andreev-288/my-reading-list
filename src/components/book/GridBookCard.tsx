@@ -1,3 +1,4 @@
+import { EditBookFormModal } from "@/components";
 import { useState, useEffect } from "react";
 import { type Book } from "../../utils/types";
 import { useBooks } from "@/serviceHooks/useBooks";
@@ -10,6 +11,7 @@ function GridBookCard({ book }: { book: Book }) {
   );
   const [isUpdating, setIsUpdating] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const { deleteBook, updateProgress, markStatus } = useBooks();
 
   useEffect(() => {
@@ -94,6 +96,7 @@ function GridBookCard({ book }: { book: Book }) {
               onClick={() => {
                 console.log("Edit clicked");
                 setIsMenuOpen(false);
+                setIsEditing(true);
               }}
             >
               <FaEdit className="mr-2 text-gray-600" />
@@ -187,6 +190,9 @@ function GridBookCard({ book }: { book: Book }) {
           Mark as {getNextStatus()}
         </button>
       </div>
+      {isEditing && (
+        <EditBookFormModal book={book} onClose={() => setIsEditing(false)} />
+      )}
     </div>
   );
 }

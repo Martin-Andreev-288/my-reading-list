@@ -1,3 +1,4 @@
+import { EditBookFormModal } from "@/components";
 import { useState, useEffect } from "react";
 import { type Book } from "../../utils/types";
 import { useBooks } from "@/serviceHooks/useBooks";
@@ -10,6 +11,7 @@ function ListBookCard({ book }: { book: Book }) {
   );
   const [isUpdating, setIsUpdating] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const { deleteBook, updateProgress, markStatus } = useBooks();
 
   useEffect(() => {
@@ -66,7 +68,6 @@ function ListBookCard({ book }: { book: Book }) {
 
   return (
     <div className="bg-white p-6 w-full max-w-3xl rounded-lg shadow-md hover:shadow-lg transition-shadow flex items-center justify-between relative">
-      {/* Delete Button */}
       {/* Top Action Menu */}
       <div className="absolute top-1.5 right-0 menu-container">
         <button
@@ -95,6 +96,7 @@ function ListBookCard({ book }: { book: Book }) {
               onClick={() => {
                 console.log("Edit clicked");
                 setIsMenuOpen(false);
+                setIsEditModalOpen(true);
               }}
             >
               <FaEdit className="mr-2 text-gray-600" />
@@ -188,6 +190,12 @@ function ListBookCard({ book }: { book: Book }) {
           Mark as {getNextStatus()}
         </button>
       </div>
+      {isEditModalOpen && (
+        <EditBookFormModal
+          book={book}
+          onClose={() => setIsEditModalOpen(false)}
+        />
+      )}
     </div>
   );
 }

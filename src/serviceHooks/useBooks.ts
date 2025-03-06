@@ -1,6 +1,6 @@
 import { useAuthContext } from "@/serviceHooks/useAuthContext";
 import { db } from "@/firebase/config";
-import { addDoc, collection, deleteDoc, doc, serverTimestamp, updateDoc } from "firebase/firestore";
+import { addDoc, getDoc, collection, deleteDoc, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { toast } from "sonner";
 import { Book } from "@/utils/types";
 
@@ -23,6 +23,37 @@ export const useBooks = () => {
             return true;
         } catch (error) {
             toast.error("Failed to add book");
+            console.error(error);
+            return false;
+        }
+    };
+
+    const updateBook = async (bookId: string, updates: Partial<Book>) => {
+        try {
+            const bookRef = doc(db, "books", bookId);
+            const updateData: Partial<Book> = {};
+
+            if (updates.title) updateData.title = updates.title.trim();
+            if (updates.author) updateData.author = updates.author.trim() || "Unknown author";
+            if (updates.genre) updateData.genre = updates.genre.trim() || "Unknown genre";
+            if (updates.totalPages) {
+                updateData.totalPages = updates.totalPages;
+                // Handle current page adjustment if total pages change
+                const currentPage = (await getDoc(bookRef)).data()?.currentPage || 0;
+                updateData.currentPage = Math.min(currentPage, updates.totalPages);
+                // Update status if needed
+                if (updateData.currentPage >= updates.totalPages) {
+                    updateData.status = "Finished";
+                } else if (updateData.currentPage > 0) {
+                    updateData.status = "Reading";
+                }
+            }
+
+            await updateDoc(bookRef, updateData);
+            toast.success("Book updated successfully!");
+            return true;
+        } catch (error) {
+            toast.error("Failed to update book");
             console.error(error);
             return false;
         }
@@ -86,5 +117,5 @@ export const useBooks = () => {
         }
     };
 
-    return { addBook, deleteBook, updateProgress, markStatus };
+    return { addBook, updateBook, deleteBook, updateProgress, markStatus };
 };
