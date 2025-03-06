@@ -1,13 +1,14 @@
-import { Navbar, BookList, BookForm } from "@/components";
+import { useState } from "react";
+import { Navbar, BookList, BookFormModal } from "@/components";
 import { Button } from "@/components/ui/button";
 import { FaPlus } from "react-icons/fa";
 
 import { useCollection } from "@/serviceHooks/useCollection";
 import { useAuthContext } from "@/serviceHooks/useAuthContext";
 
-export default function Home() {
+function Home() {
   const { user } = useAuthContext();
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { documents: books } = useCollection("books", [
     "uid",
     "==",
@@ -18,15 +19,22 @@ export default function Home() {
     <>
       <Navbar />
       <div className="flex justify-center">
-        <Button variant="outline" className="mt-10">
+        <Button
+          variant="outline"
+          className="mt-10"
+          onClick={() => setIsModalOpen(true)}
+        >
           <FaPlus />
           Add new book 📖
         </Button>
       </div>
       <div className="max-w-5xl mx-auto my-0">
         {books && <BookList books={books} />}
-        <BookForm />
       </div>
+
+      {isModalOpen && <BookFormModal onClose={() => setIsModalOpen(false)} />}
     </>
   );
 }
+
+export default Home;

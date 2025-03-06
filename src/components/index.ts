@@ -6,3 +6,5 @@ export { default as SubmitBtn } from "./submitBtn/SubmitBtn";
 export { default as ProtectedRoute } from "./auth/ProtectedRoute";
 export { default as UnprotectedRoute } from "./auth/UnprotectedRoute";
 export { default as Loader } from "./loader/Loader";
+export { default as ModalWrapper } from "./modalWrapper/ModalWrapper";
+export { default as BookFormModal } from "./book/BookFormModal";

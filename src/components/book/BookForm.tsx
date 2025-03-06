@@ -2,7 +2,11 @@ import { useState } from "react";
 import BookInputField from "./BookInputField";
 import { useBooks } from "@/serviceHooks/useBooks";
 
-function BookForm() {
+type BookFormProps = {
+  onSuccess?: () => void;
+};
+
+function BookForm({ onSuccess }: BookFormProps) {
   const MAX_PAGES = 10000;
 
   const [formData, setFormData] = useState({
@@ -19,6 +23,7 @@ function BookForm() {
     const success = await addBook(formData);
     if (success) {
       setFormData({ title: "", author: "", genre: "", totalPages: "" });
+      onSuccess?.();
     }
   };
 
@@ -32,9 +37,11 @@ function BookForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto my-4">
-      <h2 className="text-center">Add New Book:</h2>
-      <div className="space-y-4 pt-3">
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <h2 className="text-center font-semibold">
+        Fill in the Book Details Below:
+      </h2>
+      <div className="space-y-4">
         <BookInputField
           label="Title"
           required
@@ -64,7 +71,7 @@ function BookForm() {
 
         <button
           type="submit"
-          className="w-full bg-purple-800 text-white py-2 px-4 rounded hover:bg-purple-700"
+          className="w-full bg-gray-800 text-white py-2 px-4 rounded hover:bg-purple-700"
         >
           Add Book
         </button>
