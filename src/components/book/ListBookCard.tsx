@@ -29,21 +29,21 @@ function ListBookCard({ book }: { book: Book }) {
       >
         ×
       </button>
+      <span
+        className={`absolute top-6 right-8 text-sm px-2 py-1 rounded-full ${
+          book.status === "Finished"
+            ? "bg-green-100"
+            : book.status === "Reading"
+            ? "bg-yellow-100"
+            : "bg-red-100"
+        }`}
+      >
+        {book.status}
+      </span>
 
       <div className="flex-1">
         <div className="flex items-center gap-2 mb-2">
           <h3 className="font-bold text-lg">{book.title}</h3>
-          <span
-            className={`text-sm px-2 py-1 rounded-full ${
-              book.status === "Finished"
-                ? "bg-green-100"
-                : book.status === "Reading"
-                ? "bg-yellow-100"
-                : "bg-red-100"
-            }`}
-          >
-            {book.status}
-          </span>
         </div>
 
         <div className="flex gap-4 text-sm">
