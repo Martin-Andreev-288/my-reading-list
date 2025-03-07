@@ -1,9 +1,11 @@
-import { type Book } from "../../utils/types";
+import { type Book } from "@/utils/types";
 import { useMemo, useState } from "react";
-import GridBookCard from "./cards/GridBookCard";
-import ListBookCard from "./cards/ListBookCard";
-import BookControls from "./BookControls";
-import NoMatchingBooks from "./emptyStates/NoMatchingBooks";
+import {
+  GridBookCard,
+  ListBookCard,
+  NoMatchingBooks,
+  BookControls,
+} from "@/components";
 
 type BookListProps = {
   books: Book[];

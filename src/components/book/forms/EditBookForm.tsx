@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import BookInputField from "./BookInputField";
+import { BookInputField } from "@/components";
 import { useBooks } from "@/serviceHooks/useBooks";
 import type { Book } from "@/utils/types";
 

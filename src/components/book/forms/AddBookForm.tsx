@@ -1,5 +1,5 @@
 import { useState } from "react";
-import BookInputField from "./BookInputField";
+import { BookInputField } from "@/components";
 import { useBooks } from "@/serviceHooks/useBooks";
 
 type AddBookFormProps = {

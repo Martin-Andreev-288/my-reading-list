@@ -1,5 +1,4 @@
-import { ModalWrapper } from "@/components";
-import { AddBookForm } from "@/components";
+import { ModalWrapper, AddBookForm } from "@/components";
 import { MdClose } from "react-icons/md";
 
 type AddBookFormModalProps = {

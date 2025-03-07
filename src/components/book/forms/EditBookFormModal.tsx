@@ -1,5 +1,4 @@
-import { ModalWrapper } from "@/components";
-import { EditBookForm } from "@/components";
+import { ModalWrapper, EditBookForm } from "@/components";
 import { Book } from "@/utils/types";
 import { MdClose } from "react-icons/md";
 
