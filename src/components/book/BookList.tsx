@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import GridBookCard from "./GridBookCard";
 import ListBookCard from "./ListBookCard";
 import BookControls from "./BookControls";
+import NoMatchingBooks from "./NoMatchingBooks";
 
 type BookListProps = {
   books: Book[];
@@ -73,7 +74,9 @@ function BookList({ books }: BookListProps) {
         </button>
       </div>
 
-      {isGridView ? (
+      {processedBooks.length === 0 ? (
+        <NoMatchingBooks />
+      ) : isGridView ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-center">
           {processedBooks.map((book) => (
             <GridBookCard key={book.id} book={book} />
