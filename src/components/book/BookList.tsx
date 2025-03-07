@@ -14,6 +14,7 @@ function BookList({ books }: BookListProps) {
   const [filterBy, setFilterBy] = useState<
     "all" | "not-started" | "reading" | "finished"
   >("all");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const processedBooks = useMemo(() => {
     // Create a copy to avoid mutating original array
@@ -37,18 +38,22 @@ function BookList({ books }: BookListProps) {
       });
     }
 
-    return filteredBooks;
-  }, [books, sortBy, filterBy]);
+    // Search filter by title
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim();
+      filteredBooks = filteredBooks.filter((book) =>
+        book.title.toLowerCase().includes(query)
+      );
+    }
 
-  // Temporary handlers which will be deleted later
-  const handleSearch = (query: string) => {
-    console.log("Search query:", query);
-  };
+    return filteredBooks;
+  }, [books, sortBy, filterBy, searchQuery]);
 
   return (
     <div className="p-4">
       <BookControls
-        onSearchChange={handleSearch} // The search will be implemented later
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
         onSortChange={setSortBy}
         onFilterChange={setFilterBy}
       />

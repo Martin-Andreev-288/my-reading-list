@@ -1,6 +1,5 @@
-import { useState } from "react";
-
 type BookControlsProps = {
+  searchQuery: string;
   onSearchChange: (query: string) => void;
   onSortChange: (sortBy: "a-z" | "z-a") => void;
   onFilterChange: (
@@ -9,12 +8,11 @@ type BookControlsProps = {
 };
 
 function BookControls({
+  searchQuery,
   onSearchChange,
   onSortChange,
   onFilterChange,
 }: BookControlsProps) {
-  const [searchQuery, setSearchQuery] = useState("");
-
   return (
     <div className="flex flex-col md:flex-row gap-4 mb-6 p-4 bg-white rounded-lg shadow-sm">
       {/* Search Input */}
@@ -32,7 +30,6 @@ function BookControls({
           className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
           value={searchQuery}
           onChange={(e) => {
-            setSearchQuery(e.target.value);
             onSearchChange(e.target.value);
           }}
         />
