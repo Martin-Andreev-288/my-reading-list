@@ -38,12 +38,18 @@ function BookList({ books }: BookListProps) {
       });
     }
 
-    // Search filter by title
+    // Search filter by titlem author, or genre
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase().trim();
-      filteredBooks = filteredBooks.filter((book) =>
-        book.title.toLowerCase().includes(query)
-      );
+      filteredBooks = filteredBooks.filter((book) => {
+        const searchString = [
+          book.title.toLowerCase(),
+          book.author.toLowerCase(),
+          book.genre.toLowerCase(),
+        ].join(" ");
+
+        return searchString.includes(query);
+      });
     }
 
     return filteredBooks;

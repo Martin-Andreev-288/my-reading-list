@@ -26,12 +26,10 @@ function BookControls({
         <input
           type="text"
           id="search"
-          placeholder="Search by title..."
+          placeholder="Search by title, author, or genre..."
           className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
           value={searchQuery}
-          onChange={(e) => {
-            onSearchChange(e.target.value);
-          }}
+          onChange={(e) => onSearchChange(e.target.value)}
         />
       </div>
 
