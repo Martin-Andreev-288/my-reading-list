@@ -1,17 +1,17 @@
 import { EditBookFormModal } from "@/components";
 import { useState, useEffect } from "react";
-import { type Book } from "../../utils/types";
+import { type Book } from "@/utils/types";
 import { useBooks } from "@/serviceHooks/useBooks";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
-function GridBookCard({ book }: { book: Book }) {
+function ListBookCard({ book }: { book: Book }) {
   const [currentPageInput, setCurrentPageInput] = useState(
     book.currentPage || 0
   );
   const [isUpdating, setIsUpdating] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const { deleteBook, updateProgress, markStatus } = useBooks();
 
   useEffect(() => {
@@ -67,7 +67,7 @@ function GridBookCard({ book }: { book: Book }) {
       : 0;
 
   return (
-    <div className="bg-white p-7 min-h-64 rounded-lg shadow-md hover:shadow-lg transition-shadow relative flex flex-col">
+    <div className="bg-white p-6 w-full max-w-3xl rounded-lg shadow-md hover:shadow-lg transition-shadow flex items-center justify-between relative">
       {/* Top Action Menu */}
       <div className="absolute top-1.5 right-0 menu-container">
         <button
@@ -96,7 +96,7 @@ function GridBookCard({ book }: { book: Book }) {
               onClick={() => {
                 console.log("Edit clicked");
                 setIsMenuOpen(false);
-                setIsEditing(true);
+                setIsEditModalOpen(true);
               }}
             >
               <FaEdit className="mr-2 text-gray-600" />
@@ -115,29 +115,30 @@ function GridBookCard({ book }: { book: Book }) {
           </div>
         )}
       </div>
+      <span
+        className={`absolute top-6 right-8 text-sm px-2 py-1 rounded-full ${
+          book.status === "Finished"
+            ? "bg-green-100"
+            : book.status === "Reading"
+            ? "bg-yellow-100"
+            : "bg-red-100"
+        }`}
+      >
+        {book.status}
+      </span>
 
-      {/* Content Section */}
-      <div className="flex-grow mt-1">
-        <div className="flex justify-between items-start mb-2 gap-2">
-          <h3 className="font-bold text-lg truncate flex-grow">{book.title}</h3>
-          <span
-            className={`text-sm px-2 py-1 rounded-full whitespace-nowrap ${
-              book.status === "Finished"
-                ? "bg-green-100 text-green-800"
-                : book.status === "Reading"
-                ? "bg-yellow-100 text-yellow-800"
-                : "bg-red-100 text-red-800"
-            }`}
-          >
-            {book.status}
-          </span>
+      <div className="flex-1">
+        <div className="flex items-center gap-2 mb-2">
+          <h3 className="font-bold text-lg">{book.title}</h3>
         </div>
 
-        <p className="text-gray-600 truncate">{book.author}</p>
-        <p className="text-sm text-purple-600">{book.genre}</p>
-        <p className="text-gray-500 mb-3">{book.totalPages} pages</p>
+        <div className="flex gap-4 text-sm">
+          <p className="text-gray-600">{book.author}</p>
+          <p className="text-purple-600">{book.genre}</p>
+          <p className="text-gray-500">{book.totalPages} pages</p>
+        </div>
 
-        <div className="mb-3">
+        <div className="m-3">
           <div className="w-full bg-gray-200 rounded-full h-2">
             <div
               className="bg-purple-600 rounded-full h-2"
@@ -151,12 +152,9 @@ function GridBookCard({ book }: { book: Book }) {
             </span>
           </div>
         </div>
-      </div>
 
-      {/* Bottom Actions */}
-      <div className="flex flex-col items-center mt-auto pt-4">
         {(book.status === "Reading" || book.status === "Not Started") && (
-          <div className="flex items-center gap-2 mb-3">
+          <div className="mt-2 flex items-center gap-2">
             <input
               type="number"
               min="0"
@@ -173,28 +171,33 @@ function GridBookCard({ book }: { book: Book }) {
               disabled={isUpdating}
             />
             <button
-              className="text-sm bg-blue-100 px-2 py-1 rounded hover:bg-blue-200 disabled:opacity-50"
+              className="text-sm bg-blue-100 px-2 py-1 rounded hover:bg-blue-200"
               onClick={handleUpdateProgress}
               disabled={isUpdating}
             >
-              {isUpdating ? "Updating..." : "Update Page"}
+              {isUpdating ? "Updating Page..." : "Update Page"}
             </button>
           </div>
         )}
+      </div>
 
+      <div className="flex flex-col gap-2 ml-4">
         <button
-          className="text-sm bg-purple-100 px-3 py-1.5 rounded hover:bg-purple-200 disabled:opacity-50"
+          className="text-sm bg-purple-100 px-3 py-1 rounded hover:bg-purple-200"
           onClick={handleMarkStatus}
           disabled={isUpdating}
         >
           Mark as {getNextStatus()}
         </button>
       </div>
-      {isEditing && (
-        <EditBookFormModal book={book} onClose={() => setIsEditing(false)} />
+      {isEditModalOpen && (
+        <EditBookFormModal
+          book={book}
+          onClose={() => setIsEditModalOpen(false)}
+        />
       )}
     </div>
   );
 }
 
-export default GridBookCard;
+export default ListBookCard;
