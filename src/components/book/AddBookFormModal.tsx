@@ -1,12 +1,12 @@
 import { ModalWrapper } from "@/components";
-import { BookForm } from "@/components";
+import { AddBookForm } from "@/components";
 import { MdClose } from "react-icons/md";
 
-type BookFormModalProps = {
+type AddBookFormModalProps = {
   onClose: () => void;
 };
 
-function BookFormModal({ onClose }: BookFormModalProps) {
+function AddBookFormModal({ onClose }: AddBookFormModalProps) {
   return (
     <ModalWrapper>
       <div className="relative bg-white rounded-lg p-8 max-w-md w-full mx-4 shadow-xl">
@@ -21,10 +21,10 @@ function BookFormModal({ onClose }: BookFormModalProps) {
           Add New Book 📖
         </h2>
 
-        <BookForm onSuccess={onClose} />
+        <AddBookForm onSuccess={onClose} />
       </div>
     </ModalWrapper>
   );
 }
 
-export default BookFormModal;
+export default AddBookFormModal;

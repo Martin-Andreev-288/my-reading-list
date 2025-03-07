@@ -1,5 +1,5 @@
 export { default as Navbar } from "./layout/Navbar";
-export { default as BookForm } from "./book/BookForm";
+export { default as AddBookForm } from "./book/AddBookForm";
 export { default as BookList } from "./book/BookList";
 export { default as FormInput } from "./formInput/FormInput";
 export { default as SubmitBtn } from "./submitBtn/SubmitBtn";
@@ -7,6 +7,6 @@ export { default as ProtectedRoute } from "./auth/ProtectedRoute";
 export { default as UnprotectedRoute } from "./auth/UnprotectedRoute";
 export { default as Loader } from "./loader/Loader";
 export { default as ModalWrapper } from "./modalWrapper/ModalWrapper";
-export { default as BookFormModal } from "./book/BookFormModal";
+export { default as AddBookFormModal } from "./book/AddBookFormModal";
 export { default as EditBookForm } from "./book/EditBookForm";
 export { default as EditBookFormModal } from "./book/EditBookFormModal";

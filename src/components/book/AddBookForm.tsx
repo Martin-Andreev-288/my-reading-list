@@ -2,11 +2,11 @@ import { useState } from "react";
 import BookInputField from "./BookInputField";
 import { useBooks } from "@/serviceHooks/useBooks";
 
-type BookFormProps = {
+type AddBookFormProps = {
   onSuccess?: () => void;
 };
 
-function BookForm({ onSuccess }: BookFormProps) {
+function AddBookForm({ onSuccess }: AddBookFormProps) {
   const MAX_PAGES = 10000;
 
   const [formData, setFormData] = useState({
@@ -80,4 +80,4 @@ function BookForm({ onSuccess }: BookFormProps) {
   );
 }
 
-export default BookForm;
+export default AddBookForm;

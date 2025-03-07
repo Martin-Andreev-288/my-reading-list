@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Navbar, BookList, BookFormModal } from "@/components";
+import { Navbar, BookList, AddBookFormModal } from "@/components";
 import { Button } from "@/components/ui/button";
 import { FaPlus } from "react-icons/fa";
 
@@ -32,7 +32,9 @@ function Home() {
         {books && <BookList books={books} />}
       </div>
 
-      {isModalOpen && <BookFormModal onClose={() => setIsModalOpen(false)} />}
+      {isModalOpen && (
+        <AddBookFormModal onClose={() => setIsModalOpen(false)} />
+      )}
     </>
   );
 }
