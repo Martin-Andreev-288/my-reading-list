@@ -1,5 +1,5 @@
 import { type Book } from "../../utils/types";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import GridBookCard from "./GridBookCard";
 import ListBookCard from "./ListBookCard";
 import BookControls from "./BookControls";
@@ -10,28 +10,47 @@ type BookListProps = {
 
 function BookList({ books }: BookListProps) {
   const [isGridView, setIsGridView] = useState(true);
+  const [sortBy, setSortBy] = useState<"a-z" | "z-a">("a-z");
+  const [filterBy, setFilterBy] = useState<
+    "all" | "not-started" | "reading" | "finished"
+  >("all");
+
+  const processedBooks = useMemo(() => {
+    // Create a copy to avoid mutating original array
+    let filteredBooks = [...books];
+
+    // Alphabetical sorting:
+    filteredBooks.sort((a, b) => {
+      const titleA = a.title.toLowerCase();
+      const titleB = b.title.toLowerCase();
+      return sortBy === "a-z"
+        ? titleA.localeCompare(titleB)
+        : titleB.localeCompare(titleA);
+    });
+
+    // Status filtering:
+    if (filterBy !== "all") {
+      filteredBooks = filteredBooks.filter((book) => {
+        if (filterBy === "not-started") return book.status === "Not Started";
+        if (filterBy === "reading") return book.status === "Reading";
+        return book.status === "Finished";
+      });
+    }
+
+    return filteredBooks;
+  }, [books, sortBy, filterBy]);
 
   // Temporary handlers which will be deleted later
   const handleSearch = (query: string) => {
     console.log("Search query:", query);
   };
 
-  const handleSort = (sortBy: "a-z" | "z-a") => {
-    console.log("Sorting by:", sortBy);
-  };
-
-  const handleFilter = (
-    filterBy: "all" | "not-started" | "reading" | "finished"
-  ) => {
-    console.log("Filtering by:", filterBy);
-  };
-
   return (
     <div className="p-4">
       <BookControls
-        onSearchChange={handleSearch}
-        onSortChange={handleSort}
-        onFilterChange={handleFilter}
+        onSearchChange={handleSearch} // The search will be implemented later
+        onSortChange={setSortBy}
+        onFilterChange={setFilterBy}
       />
 
       <div className="flex justify-end mb-4">
@@ -45,13 +64,13 @@ function BookList({ books }: BookListProps) {
 
       {isGridView ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-center">
-          {books.map((book) => (
+          {processedBooks.map((book) => (
             <GridBookCard key={book.id} book={book} />
           ))}
         </div>
       ) : (
         <div className="flex flex-col items-center space-y-4">
-          {books.map((book) => (
+          {processedBooks.map((book) => (
             <ListBookCard key={book.id} book={book} />
           ))}
         </div>
