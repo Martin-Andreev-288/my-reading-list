@@ -10,3 +10,4 @@ export { default as ModalWrapper } from "./modalWrapper/ModalWrapper";
 export { default as AddBookFormModal } from "./book/forms/AddBookFormModal";
 export { default as EditBookForm } from "./book/forms/EditBookForm";
 export { default as EditBookFormModal } from "./book/forms/EditBookFormModal";
+export { default as EmptyLibraryState } from "./book/emptyStates/EmptyLibraryState";

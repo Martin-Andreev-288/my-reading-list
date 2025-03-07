@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { Navbar, BookList, AddBookFormModal } from "@/components";
+import {
+  Navbar,
+  BookList,
+  AddBookFormModal,
+  EmptyLibraryState,
+} from "@/components";
 import { Button } from "@/components/ui/button";
 import { FaPlus } from "react-icons/fa";
 
@@ -14,6 +19,20 @@ function Home() {
     "==",
     user?.uid as string,
   ]);
+
+  if (books?.length === 0) {
+    return (
+      <>
+        <Navbar />
+        <div className="max-w-5xl mx-auto my-0">
+          <EmptyLibraryState onAddBook={() => setIsModalOpen(true)} />
+        </div>
+        {isModalOpen && (
+          <AddBookFormModal onClose={() => setIsModalOpen(false)} />
+        )}
+      </>
+    );
+  }
 
   return (
     <>
