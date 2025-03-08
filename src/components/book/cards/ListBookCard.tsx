@@ -4,6 +4,7 @@ import { type Book } from "@/utils/types";
 import { useBooks } from "@/serviceHooks/useBooks";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import { toast } from "sonner";
 
 function ListBookCard({ book }: { book: Book }) {
   const [currentPageInput, setCurrentPageInput] = useState(
@@ -29,6 +30,13 @@ function ListBookCard({ book }: { book: Book }) {
   }, []);
 
   const handleUpdateProgress = async () => {
+    const hasChanges = currentPageInput !== book.currentPage;
+
+    if (!hasChanges) {
+      toast.error("No changes detected");
+      return;
+    }
+
     setIsUpdating(true);
     try {
       await updateProgress(book.id, currentPageInput, book.totalPages);

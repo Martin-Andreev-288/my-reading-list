@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { BookInputField } from "@/components";
 import { useBooks } from "@/serviceHooks/useBooks";
 import type { Book } from "@/utils/types";
+import { toast } from "sonner";
 
 type EditBookFormProps = {
   book: Book;
@@ -32,11 +33,22 @@ function EditBookForm({ book, onSuccess }: EditBookFormProps) {
     e.preventDefault();
 
     const updates = {
-      title: formData.title,
-      author: formData.author,
-      genre: formData.genre,
+      title: formData.title.trim(),
+      author: formData.author.trim(),
+      genre: formData.genre.trim(),
       totalPages: parseInt(formData.totalPages),
     };
+
+    const hasChanges =
+      updates.title !== book.title ||
+      updates.author !== book.author ||
+      updates.genre !== book.genre ||
+      updates.totalPages !== book.totalPages;
+
+    if (!hasChanges) {
+      toast.error("No changes detected");
+      return;
+    }
 
     const success = await updateBook(book.id, updates);
     if (success) onSuccess?.();
