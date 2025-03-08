@@ -1,7 +1,7 @@
 import { RouterProvider, createBrowserRouter } from "react-router";
 import { Home, Login, SignUp, Error } from "./pages";
 import { AuthContextProvider } from "./context/AuthContext";
-import { ProtectedRoute, UnprotectedRoute } from "./components";
+import { ProtectedRoute, UnprotectedRoute, ErrorElement } from "@/components";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +20,7 @@ const router = createBrowserRouter([
         <Login />
       </UnprotectedRoute>
     ),
+    errorElement: <ErrorElement />,
   },
   {
     path: "/signup",
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
         <SignUp />
       </UnprotectedRoute>
     ),
+    errorElement: <ErrorElement />,
   },
 ]);
 
