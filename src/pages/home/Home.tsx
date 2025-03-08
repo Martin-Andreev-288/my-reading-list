@@ -4,10 +4,10 @@ import {
   BookList,
   AddBookFormModal,
   EmptyLibraryState,
+  BookStatistics,
 } from "@/components";
 import { Button } from "@/components/ui/button";
 import { FaPlus } from "react-icons/fa";
-
 import { useCollection } from "@/serviceHooks/useCollection";
 import { useAuthContext } from "@/serviceHooks/useAuthContext";
 
@@ -48,7 +48,12 @@ function Home() {
         </Button>
       </div>
       <div className="max-w-5xl mx-auto my-0">
-        {books && <BookList books={books} />}
+        {books && (
+          <>
+            <BookStatistics books={books} />
+            <BookList books={books} />
+          </>
+        )}
       </div>
 
       {isModalOpen && (
