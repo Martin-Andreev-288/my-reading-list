@@ -1,11 +1,12 @@
 import { RouterProvider, createBrowserRouter } from "react-router";
-import { Home, Login, SignUp } from "./pages";
+import { Home, Login, SignUp, Error } from "./pages";
 import { AuthContextProvider } from "./context/AuthContext";
 import { ProtectedRoute, UnprotectedRoute } from "./components";
 
 const router = createBrowserRouter([
   {
     path: "/",
+    errorElement: <Error />,
     element: (
       <ProtectedRoute>
         <Home />
