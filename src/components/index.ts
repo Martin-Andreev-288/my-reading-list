@@ -13,6 +13,7 @@ export { default as BookControls } from "./book/BookControls";
 export { default as BookList } from "./book/BookList";
 export { default as BookStatistics } from "./book/BookStatistics";
 export { default as ErrorElement } from './errorElement/ErrorElement';
+export { default as Footer } from './footer/Footer';
 export { default as FormInput } from "./formInput/FormInput";
 export { default as Navbar } from "./layout/Navbar";
 export { default as Loader } from "./loader/Loader";

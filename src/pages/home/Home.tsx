@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {
   Navbar,
+  Footer,
   BookList,
   AddBookFormModal,
   EmptyLibraryState,
@@ -30,6 +31,7 @@ function Home() {
         {isModalOpen && (
           <AddBookFormModal onClose={() => setIsModalOpen(false)} />
         )}
+        <Footer />
       </>
     );
   }
@@ -59,6 +61,7 @@ function Home() {
       {isModalOpen && (
         <AddBookFormModal onClose={() => setIsModalOpen(false)} />
       )}
+      <Footer />
     </>
   );
 }
