@@ -23,46 +23,50 @@ function Home() {
 
   if (books?.length === 0) {
     return (
-      <>
+      <div className="min-h-screen flex flex-col">
         <Navbar />
-        <div className="max-w-5xl mx-auto my-0">
-          <EmptyLibraryState onAddBook={() => setIsModalOpen(true)} />
-        </div>
-        {isModalOpen && (
-          <AddBookFormModal onClose={() => setIsModalOpen(false)} />
-        )}
+        <main className="flex-1">
+          <div className="max-w-5xl mx-auto my-0">
+            <EmptyLibraryState onAddBook={() => setIsModalOpen(true)} />
+          </div>
+          {isModalOpen && (
+            <AddBookFormModal onClose={() => setIsModalOpen(false)} />
+          )}
+        </main>
         <Footer />
-      </>
+      </div>
     );
   }
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <Navbar />
-      <div className="flex justify-center">
-        <Button
-          variant="outline"
-          className="mt-10"
-          onClick={() => setIsModalOpen(true)}
-        >
-          <FaPlus />
-          Add new book 📖
-        </Button>
-      </div>
-      <div className="max-w-5xl mx-auto my-0">
-        {books && (
-          <>
-            <BookStatistics books={books} />
-            <BookList books={books} />
-          </>
-        )}
-      </div>
+      <main className="flex-1">
+        <div className="flex justify-center">
+          <Button
+            variant="outline"
+            className="mt-10"
+            onClick={() => setIsModalOpen(true)}
+          >
+            <FaPlus />
+            Add new book 📖
+          </Button>
+        </div>
+        <div className="max-w-5xl mx-auto my-0">
+          {books && (
+            <>
+              <BookStatistics books={books} />
+              <BookList books={books} />
+            </>
+          )}
+        </div>
 
-      {isModalOpen && (
-        <AddBookFormModal onClose={() => setIsModalOpen(false)} />
-      )}
+        {isModalOpen && (
+          <AddBookFormModal onClose={() => setIsModalOpen(false)} />
+        )}
+      </main>
       <Footer />
-    </>
+    </div>
   );
 }
 
