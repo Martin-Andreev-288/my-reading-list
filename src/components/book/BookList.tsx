@@ -1,11 +1,6 @@
 import { type Book } from "@/utils/types";
 import { useMemo, useState } from "react";
-import {
-  GridBookCard,
-  ListBookCard,
-  NoMatchingBooks,
-  BookControls,
-} from "@/components";
+import { NoMatchingBooks, BookControls, CardsContainer } from "@/components";
 
 type BookListProps = {
   books: Book[];
@@ -78,16 +73,20 @@ function BookList({ books }: BookListProps) {
 
       {processedBooks.length === 0 ? (
         <NoMatchingBooks />
-      ) : isGridView ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-center">
-          {processedBooks.map((book) => (
-            <GridBookCard key={book.id} book={book} />
-          ))}
-        </div>
       ) : (
-        <div className="flex flex-col items-center space-y-4">
+        <div
+          className={
+            isGridView
+              ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-center"
+              : "flex flex-col items-center space-y-4"
+          }
+        >
           {processedBooks.map((book) => (
-            <ListBookCard key={book.id} book={book} />
+            <CardsContainer
+              key={book.id}
+              book={book}
+              variant={isGridView ? "grid" : "list"}
+            />
           ))}
         </div>
       )}

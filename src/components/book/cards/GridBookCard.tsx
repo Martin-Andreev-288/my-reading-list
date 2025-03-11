@@ -1,86 +1,48 @@
 import { EditBookFormModal } from "@/components";
-import { useState, useEffect } from "react";
 import { type Book } from "@/utils/types";
-import { useBooks } from "@/serviceHooks/useBooks";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import { toast } from "sonner";
 
-function GridBookCard({ book }: { book: Book }) {
-  const [currentPageInput, setCurrentPageInput] = useState(
-    book.currentPage || 0
-  );
-  const [isUpdating, setIsUpdating] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const { deleteBook, updateProgress, markStatus } = useBooks();
+type GridBookCardProps = {
+  book: Book;
+  progress: number;
+  currentPageInput: number;
+  isUpdating: boolean;
+  isMenuOpen: boolean;
+  isEditModalOpen: boolean;
+  onEdit: () => void;
+  onDelete: () => void;
+  onMenuToggle: () => void;
+  onPageChange: (value: number) => void;
+  onUpdateProgress: () => void;
+  onMarkStatus: () => void;
+  nextStatusLabel: string;
+  onCloseEdit: () => void;
+};
 
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (
-        !(e.target as Element).closest(".menu-container") &&
-        !(e.target as Element).closest(".menu-button")
-      ) {
-        setIsMenuOpen(false);
-      }
-    };
-
-    document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
-  }, []);
-
-  const handleUpdateProgress = async () => {
-    const hasChanges = currentPageInput !== book.currentPage;
-
-    if (!hasChanges) {
-      toast.error("No changes detected");
-      return;
-    }
-
-    setIsUpdating(true);
-    try {
-      await updateProgress(book.id, currentPageInput, book.totalPages);
-    } finally {
-      setIsUpdating(false);
-    }
-  };
-
-  const handleMarkStatus = async () => {
-    setIsUpdating(true);
-    try {
-      await markStatus(book.id, book.status, book.totalPages);
-    } finally {
-      setIsUpdating(false);
-    }
-  };
-
-  const getNextStatus = (): Book["status"] => {
-    switch (book.status) {
-      case "Not Started":
-        return "Reading";
-      case "Reading":
-        return "Finished";
-      case "Finished":
-        return "Not Started";
-      default:
-        return "Not Started";
-    }
-  };
-
-  const progress =
-    book.status === "Finished"
-      ? 100
-      : book.currentPage
-      ? Math.round((book.currentPage / book.totalPages) * 100)
-      : 0;
-
+const GridBookCard = ({
+  book,
+  progress,
+  currentPageInput,
+  isUpdating,
+  isMenuOpen,
+  isEditModalOpen,
+  onEdit,
+  onDelete,
+  onMenuToggle,
+  onPageChange,
+  onUpdateProgress,
+  onMarkStatus,
+  nextStatusLabel,
+  onCloseEdit,
+}: GridBookCardProps) => {
   return (
     <div className="bg-white p-7 min-h-64 rounded-lg shadow-md hover:shadow-lg transition-shadow relative flex flex-col">
       {/* Top Action Menu */}
       <div className="absolute top-1.5 right-0 menu-container">
         <button
           className="menu-button text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          onClick={onMenuToggle}
         >
           <svg
             className="w-5 h-5"
@@ -102,9 +64,8 @@ function GridBookCard({ book }: { book: Book }) {
             <button
               className="w-full px-4 py-2 text-sm text-left hover:bg-gray-100 flex items-center"
               onClick={() => {
-                console.log("Edit clicked");
-                setIsMenuOpen(false);
-                setIsEditing(true);
+                onEdit();
+                onMenuToggle();
               }}
             >
               <FaEdit className="mr-2 text-gray-600" />
@@ -113,8 +74,8 @@ function GridBookCard({ book }: { book: Book }) {
             <button
               className="w-full px-4 py-2 text-sm text-left hover:bg-gray-100 text-red-600 flex items-center"
               onClick={() => {
-                deleteBook(book.id);
-                setIsMenuOpen(false);
+                onDelete();
+                onMenuToggle();
               }}
             >
               <MdDelete className="mr-2 text-red-600" />
@@ -176,13 +137,13 @@ function GridBookCard({ book }: { book: Book }) {
                   book.totalPages,
                   Math.max(0, parseInt(e.target.value) || 0)
                 );
-                setCurrentPageInput(value);
+                onPageChange(value);
               }}
               disabled={isUpdating}
             />
             <button
               className="text-sm bg-blue-100 px-2 py-1 rounded hover:bg-blue-200 disabled:opacity-50"
-              onClick={handleUpdateProgress}
+              onClick={onUpdateProgress}
               disabled={isUpdating}
             >
               {isUpdating ? "Updating..." : "Update Page"}
@@ -192,17 +153,18 @@ function GridBookCard({ book }: { book: Book }) {
 
         <button
           className="text-sm bg-purple-100 px-3 py-1.5 rounded hover:bg-purple-200 disabled:opacity-50"
-          onClick={handleMarkStatus}
+          onClick={onMarkStatus}
           disabled={isUpdating}
         >
-          Mark as {getNextStatus()}
+          Mark as {nextStatusLabel}
         </button>
       </div>
-      {isEditing && (
-        <EditBookFormModal book={book} onClose={() => setIsEditing(false)} />
+
+      {isEditModalOpen && (
+        <EditBookFormModal book={book} onClose={onCloseEdit} />
       )}
     </div>
   );
-}
+};
 
 export default GridBookCard;
