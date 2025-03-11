@@ -1,6 +1,6 @@
 import { GridBookCard, ListBookCard } from "@/components";
 import { useState, useEffect } from "react";
-import { type Book } from "@/utils/types";
+import { type Book, type CommonBookCardProps } from "@/utils/types";
 import { useBooks } from "@/serviceHooks/useBooks";
 import { toast } from "sonner";
 
@@ -78,40 +78,27 @@ const CardsContainer = ({ book, variant }: CardsContainerProps) => {
       ? Math.round((book.currentPage / book.totalPages) * 100)
       : 0;
 
+  const commonProps: CommonBookCardProps = {
+    book,
+    progress,
+    currentPageInput,
+    isUpdating,
+    isMenuOpen,
+    isEditModalOpen,
+    nextStatusLabel: nextStatusLabel,
+    onEdit: () => setIsEditModalOpen(true),
+    onDelete: () => deleteBook(book.id),
+    onMenuToggle: () => setIsMenuOpen(!isMenuOpen),
+    onPageChange: setCurrentPageInput,
+    onUpdateProgress: handleUpdateProgress,
+    onMarkStatus: handleMarkStatus,
+    onCloseEdit: () => setIsEditModalOpen(false),
+  };
+
   return variant === "grid" ? (
-    <GridBookCard
-      book={book}
-      progress={progress}
-      currentPageInput={currentPageInput}
-      isUpdating={isUpdating}
-      isMenuOpen={isMenuOpen}
-      isEditModalOpen={isEditModalOpen}
-      onEdit={() => setIsEditModalOpen(true)}
-      onDelete={() => deleteBook(book.id)}
-      onMenuToggle={() => setIsMenuOpen(!isMenuOpen)}
-      onPageChange={setCurrentPageInput}
-      onUpdateProgress={handleUpdateProgress}
-      onMarkStatus={handleMarkStatus}
-      nextStatusLabel={nextStatusLabel}
-      onCloseEdit={() => setIsEditModalOpen(false)}
-    />
+    <GridBookCard {...commonProps} />
   ) : (
-    <ListBookCard
-      book={book}
-      progress={progress}
-      currentPageInput={currentPageInput}
-      isUpdating={isUpdating}
-      isMenuOpen={isMenuOpen}
-      isEditModalOpen={isEditModalOpen}
-      onEdit={() => setIsEditModalOpen(true)}
-      onDelete={() => deleteBook(book.id)}
-      onMenuToggle={() => setIsMenuOpen(!isMenuOpen)}
-      onPageChange={setCurrentPageInput}
-      onUpdateProgress={handleUpdateProgress}
-      onMarkStatus={handleMarkStatus}
-      nextStatusLabel={nextStatusLabel}
-      onCloseEdit={() => setIsEditModalOpen(false)}
-    />
+    <ListBookCard {...commonProps} />
   );
 };
 

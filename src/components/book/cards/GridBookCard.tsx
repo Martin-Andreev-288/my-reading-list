@@ -1,24 +1,9 @@
 import { EditBookFormModal } from "@/components";
-import { type Book } from "@/utils/types";
+import { type CommonBookCardProps } from "@/utils/types";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
-type GridBookCardProps = {
-  book: Book;
-  progress: number;
-  currentPageInput: number;
-  isUpdating: boolean;
-  isMenuOpen: boolean;
-  isEditModalOpen: boolean;
-  onEdit: () => void;
-  onDelete: () => void;
-  onMenuToggle: () => void;
-  onPageChange: (value: number) => void;
-  onUpdateProgress: () => void;
-  onMarkStatus: () => void;
-  nextStatusLabel: string;
-  onCloseEdit: () => void;
-};
+type GridBookCardProps = CommonBookCardProps;
 
 const GridBookCard = ({
   book,
@@ -27,17 +12,17 @@ const GridBookCard = ({
   isUpdating,
   isMenuOpen,
   isEditModalOpen,
+  nextStatusLabel,
   onEdit,
   onDelete,
   onMenuToggle,
   onPageChange,
   onUpdateProgress,
   onMarkStatus,
-  nextStatusLabel,
   onCloseEdit,
 }: GridBookCardProps) => {
   return (
-    <div className="bg-white p-7 min-h-64 rounded-lg shadow-md hover:shadow-lg transition-shadow relative flex flex-col">
+    <div className="bg-white p-7 min-h-80 rounded-lg shadow-md hover:shadow-lg transition-shadow relative flex flex-col">
       {/* Top Action Menu */}
       <div className="absolute top-1.5 right-0 menu-container">
         <button

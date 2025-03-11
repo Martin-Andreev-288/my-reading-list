@@ -1,24 +1,9 @@
 import { EditBookFormModal } from "@/components";
-import { type Book } from "@/utils/types";
+import { type CommonBookCardProps } from "@/utils/types";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
-type ListBookCardProps = {
-  book: Book;
-  progress: number;
-  currentPageInput: number;
-  isUpdating: boolean;
-  isMenuOpen: boolean;
-  isEditModalOpen: boolean;
-  onEdit: () => void;
-  onDelete: () => void;
-  onMenuToggle: () => void;
-  onPageChange: (value: number) => void;
-  onUpdateProgress: () => void;
-  onMarkStatus: () => void;
-  nextStatusLabel: string;
-  onCloseEdit: () => void;
-};
+type ListBookCardProps = CommonBookCardProps;
 
 function ListBookCard({
   book,
@@ -27,13 +12,13 @@ function ListBookCard({
   isUpdating,
   isMenuOpen,
   isEditModalOpen,
+  nextStatusLabel,
   onEdit,
   onDelete,
   onMenuToggle,
   onPageChange,
   onUpdateProgress,
   onMarkStatus,
-  nextStatusLabel,
   onCloseEdit,
 }: ListBookCardProps) {
   return (
