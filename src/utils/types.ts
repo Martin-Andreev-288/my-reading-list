@@ -17,6 +17,7 @@ export type CommonBookCardProps = {
   isUpdating: boolean;
   isMenuOpen: boolean;
   isEditModalOpen: boolean;
+  isDeleteModalOpen: boolean;
   nextStatusLabel: string;
   onEdit: () => void;
   onDelete: () => void;
@@ -25,4 +26,5 @@ export type CommonBookCardProps = {
   onUpdateProgress: () => void;
   onMarkStatus: () => void;
   onCloseEdit: () => void;
+  onCloseDelete: () => void;
 };

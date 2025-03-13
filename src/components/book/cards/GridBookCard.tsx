@@ -1,4 +1,4 @@
-import { EditBookFormModal } from "@/components";
+import { DeleteBookFormModal, EditBookFormModal } from "@/components";
 import { type CommonBookCardProps } from "@/utils/types";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
@@ -12,6 +12,7 @@ const GridBookCard = ({
   isUpdating,
   isMenuOpen,
   isEditModalOpen,
+  isDeleteModalOpen,
   nextStatusLabel,
   onEdit,
   onDelete,
@@ -20,6 +21,7 @@ const GridBookCard = ({
   onUpdateProgress,
   onMarkStatus,
   onCloseEdit,
+  onCloseDelete,
 }: GridBookCardProps) => {
   return (
     <div className="bg-white p-7 min-h-80 rounded-lg shadow-md hover:shadow-lg transition-shadow relative flex flex-col">
@@ -147,6 +149,9 @@ const GridBookCard = ({
 
       {isEditModalOpen && (
         <EditBookFormModal book={book} onClose={onCloseEdit} />
+      )}
+      {isDeleteModalOpen && (
+        <DeleteBookFormModal book={book} onClose={onCloseDelete} />
       )}
     </div>
   );

@@ -8,6 +8,7 @@ export { default as EmptyLibraryState } from "./book/emptyStates/EmptyLibrarySta
 export { default as AddBookForm } from "./book/forms/AddBookForm";
 export { default as AddBookFormModal } from "./book/forms/AddBookFormModal";
 export { default as BookInputField } from "./book/forms/BookInputField";
+export { default as DeleteBookFormModal } from "./book/forms/DeleteBookFormModal";
 export { default as EditBookForm } from "./book/forms/EditBookForm";
 export { default as EditBookFormModal } from "./book/forms/EditBookFormModal";
 export { default as BookControls } from "./book/BookControls";

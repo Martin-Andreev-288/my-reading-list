@@ -1,4 +1,4 @@
-import { EditBookFormModal } from "@/components";
+import { DeleteBookFormModal, EditBookFormModal } from "@/components";
 import { type CommonBookCardProps } from "@/utils/types";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
@@ -12,6 +12,7 @@ function ListBookCard({
   isUpdating,
   isMenuOpen,
   isEditModalOpen,
+  isDeleteModalOpen,
   nextStatusLabel,
   onEdit,
   onDelete,
@@ -20,6 +21,7 @@ function ListBookCard({
   onUpdateProgress,
   onMarkStatus,
   onCloseEdit,
+  onCloseDelete,
 }: ListBookCardProps) {
   return (
     <div className="bg-white p-6 w-full max-w-3xl rounded-lg shadow-md hover:shadow-lg transition-shadow flex items-center justify-between relative">
@@ -146,6 +148,9 @@ function ListBookCard({
       </div>
       {isEditModalOpen && (
         <EditBookFormModal book={book} onClose={onCloseEdit} />
+      )}
+      {isDeleteModalOpen && (
+        <DeleteBookFormModal book={book} onClose={onCloseDelete} />
       )}
     </div>
   );

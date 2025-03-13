@@ -16,7 +16,8 @@ const CardsContainer = ({ book, variant }: CardsContainerProps) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const { deleteBook, updateProgress, markStatus } = useBooks();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const { updateProgress, markStatus } = useBooks();
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -85,14 +86,16 @@ const CardsContainer = ({ book, variant }: CardsContainerProps) => {
     isUpdating,
     isMenuOpen,
     isEditModalOpen,
+    isDeleteModalOpen,
     nextStatusLabel: nextStatusLabel,
     onEdit: () => setIsEditModalOpen(true),
-    onDelete: () => deleteBook(book.id),
+    onDelete: () => setIsDeleteModalOpen(true),
     onMenuToggle: () => setIsMenuOpen(!isMenuOpen),
     onPageChange: setCurrentPageInput,
     onUpdateProgress: handleUpdateProgress,
     onMarkStatus: handleMarkStatus,
     onCloseEdit: () => setIsEditModalOpen(false),
+    onCloseDelete: () => setIsDeleteModalOpen(false),
   };
 
   return variant === "grid" ? (
