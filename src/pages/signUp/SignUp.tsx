@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { SubmitBtn, FormInput } from "@/components";
 import { useSignup } from "@/serviceHooks/useSignup";
 import { useState } from "react";
+import bgVideo from "@/assets/my-reading-list-bg-video.mp4";
 
 function Signup() {
   const [email, setEmail] = useState("");
@@ -16,38 +17,50 @@ function Signup() {
   };
 
   return (
-    <section className="h-screen grid place-items-center">
-      <Card className="w-96 bg-muted">
-        <CardHeader>
-          <CardTitle className="text-center">Signup</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit}>
-            <FormInput
-              type="email"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <FormInput
-              type="password"
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <SubmitBtn text="Register" className="w-full mt-4" />
+    <section className="h-screen relative overflow-hidden">
+      {/* Video Background */}
+      <video
+        autoPlay
+        muted
+        loop
+        className="absolute z-0 w-auto min-w-full min-h-full max-w-none object-cover"
+      >
+        <source src={bgVideo} type="video/mp4" />
+      </video>
+      {/* Register Card */}
+      <div className="relative z-10 h-full grid place-items-center">
+        <Card className="w-96 bg-muted">
+          <CardHeader>
+            <CardTitle className="text-center">Signup</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit}>
+              <FormInput
+                type="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <FormInput
+                type="password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <SubmitBtn text="Register" className="w-full mt-4" />
 
-            <p className="text-center mt-4">
-              Already a member?
-              <Button type="button" asChild variant="link">
-                <Link to="/login">Login</Link>
-              </Button>
-            </p>
-          </form>
-        </CardContent>
-      </Card>
+              <p className="text-center mt-4">
+                Already a member?
+                <Button type="button" asChild variant="link">
+                  <Link to="/login">Login</Link>
+                </Button>
+              </p>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
     </section>
   );
 }
