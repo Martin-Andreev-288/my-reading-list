@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   Navbar,
   Footer,
@@ -11,10 +11,30 @@ import { Button } from "@/components/ui/button";
 import { FaPlus } from "react-icons/fa";
 import { useCollection } from "@/serviceHooks/useCollection";
 import { useAuthContext } from "@/serviceHooks/useAuthContext";
+import {
+  bgImage,
+  bgImage1,
+  bgImage2,
+  bgImage3,
+  bgImage4,
+  bgImage5,
+} from "@/assets";
+
+const BACKGROUND_IMAGES = [
+  bgImage,
+  bgImage1,
+  bgImage2,
+  bgImage3,
+  bgImage4,
+  bgImage5,
+];
 
 function Home() {
   const { user } = useAuthContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const bgImage = useRef(
+    BACKGROUND_IMAGES[Math.floor(Math.random() * BACKGROUND_IMAGES.length)]
+  ).current;
   const { documents: books } = useCollection("books", [
     "uid",
     "==",
@@ -39,7 +59,16 @@ function Home() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div
+      className="min-h-screen flex flex-col"
+      style={{
+        backgroundImage: `url(${bgImage})`,
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundAttachment: "fixed",
+      }}
+    >
       <Navbar />
       <main className="flex-1">
         <div className="flex justify-center">
