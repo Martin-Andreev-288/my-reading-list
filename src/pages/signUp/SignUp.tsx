@@ -5,6 +5,7 @@ import { SubmitBtn, FormInput } from "@/components";
 import { useSignup } from "@/serviceHooks/useSignup";
 import { useState } from "react";
 import bgVideo from "@/assets/my-reading-list-bg-video.mp4";
+import { FaBookOpen } from "react-icons/fa";
 
 function Signup() {
   const [email, setEmail] = useState("");
@@ -23,16 +24,32 @@ function Signup() {
         autoPlay
         muted
         loop
-        className="absolute z-0 w-auto min-w-full min-h-full max-w-none object-cover"
+        className="absolute z-0 w-auto min-w-full min-h-full max-w-none object-cover blur-[2px]"
       >
         <source src={bgVideo} type="video/mp4" />
       </video>
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/50 z-0" />
       {/* Register Card */}
       <div className="relative z-10 h-full grid place-items-center">
-        <Card className="w-96 bg-muted">
+        <Card className="w-96 bg-muted/90 backdrop-blur-sm">
           <CardHeader>
-            <CardTitle className="text-center">Signup</CardTitle>
+            <CardTitle className="text-center flex items-center justify-center gap-2">
+              <FaBookOpen className="w-5 h-5 text-primary" />
+              <div className="flex flex-col">
+                <span>Welcome to</span>
+                <span className="font-semibold mt-2">My Reading List!</span>
+              </div>
+              <FaBookOpen className="w-5 h-5 text-primary" />
+            </CardTitle>
+
+            {/* Welcome Section */}
+            <div className="text-center space-y-2">
+              <p className="text-sm text-muted-foreground mt-2">
+                Begin tracking your literary adventures today
+              </p>
+            </div>
           </CardHeader>
+
           <CardContent>
             <form onSubmit={handleSubmit}>
               <FormInput
@@ -52,7 +69,7 @@ function Signup() {
               <SubmitBtn text="Register" className="w-full mt-4" />
 
               <p className="text-center mt-4">
-                Already a member?
+                Already part of our story?
                 <Button type="button" asChild variant="link">
                   <Link to="/login">Login</Link>
                 </Button>
