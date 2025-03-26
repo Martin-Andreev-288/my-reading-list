@@ -27,7 +27,7 @@ function Login() {
         autoPlay
         muted
         loop
-        className="absolute z-0 w-auto min-w-full min-h-full max-w-none object-cover blur-[2px]"
+        className="absolute z-0 w-full h-full object-cover blur-[2px]"
       >
         <source src={bgVideo} type="video/mp4" />
       </video>

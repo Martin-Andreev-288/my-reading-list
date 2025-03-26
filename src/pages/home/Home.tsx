@@ -11,23 +11,7 @@ import { Button } from "@/components/ui/button";
 import { FaPlus } from "react-icons/fa";
 import { useCollection } from "@/serviceHooks/useCollection";
 import { useAuthContext } from "@/serviceHooks/useAuthContext";
-import {
-  bgImage,
-  bgImage1,
-  bgImage2,
-  bgImage3,
-  bgImage4,
-  bgImage5,
-} from "@/assets";
-
-const BACKGROUND_IMAGES = [
-  bgImage,
-  bgImage1,
-  bgImage2,
-  bgImage3,
-  bgImage4,
-  bgImage5,
-];
+import { BACKGROUND_IMAGES } from "@/assets";
 
 function Home() {
   const { user } = useAuthContext();

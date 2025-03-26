@@ -3,13 +3,16 @@ import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { SubmitBtn, FormInput } from "@/components";
 import { useSignup } from "@/serviceHooks/useSignup";
-import { useState } from "react";
-import bgVideo from "@/assets/my-reading-list-bg-video.mp4";
+import { useRef, useState } from "react";
+import { videos } from "@/assets";
 import { FaBookOpen } from "react-icons/fa";
 
 function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const bgVideo = useRef(
+    videos[Math.floor(Math.random() * videos.length)]
+  ).current;
   const { signup } = useSignup();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -24,7 +27,7 @@ function Signup() {
         autoPlay
         muted
         loop
-        className="absolute z-0 w-auto min-w-full min-h-full max-w-none object-cover blur-[2px]"
+        className="absolute z-0 w-full h-full object-cover blur-[2px]"
       >
         <source src={bgVideo} type="video/mp4" />
       </video>
