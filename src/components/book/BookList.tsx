@@ -54,7 +54,7 @@ function BookList({ books }: BookListProps) {
   }, [books, sortBy, filterBy, searchQuery]);
 
   return (
-    <div className="p-4">
+    <div className="pt-4 pb-4">
       <BookControls
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}

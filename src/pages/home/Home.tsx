@@ -55,20 +55,20 @@ function Home() {
     >
       <Navbar />
       <main className="flex-1">
-        <div className="flex justify-center">
-          <Button
-            variant="outline"
-            className="mt-10"
-            onClick={() => setIsModalOpen(true)}
-          >
-            <FaPlus />
-            Add new book 📖
-          </Button>
-        </div>
         <div className="max-w-5xl mx-auto my-0">
           {books && (
             <>
               <BookStatistics books={books} />
+              <div className="text-right">
+                <Button
+                  variant="outline"
+                  className="mt-10"
+                  onClick={() => setIsModalOpen(true)}
+                >
+                  <FaPlus />
+                  Add new book 📖
+                </Button>
+              </div>
               <BookList books={books} />
             </>
           )}
