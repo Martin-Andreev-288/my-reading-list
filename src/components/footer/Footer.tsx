@@ -1,6 +1,6 @@
 function Footer() {
   return (
-    <footer className="mt-10 py-4 bg-gray-200 text-center text-gray-600">
+    <footer className="mt-auto py-4 backdrop-blur-sm text-center border-t border-white/10 bg-neutral-900/80  text-neutral-100">
       <p className="text-sm">
         &copy; {new Date().getFullYear()} Marto Book App. All rights reserved.
       </p>

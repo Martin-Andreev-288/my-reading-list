@@ -1,6 +1,6 @@
 import { DeleteBookFormModal, EditBookFormModal } from "@/components";
 import { type CommonBookCardProps } from "@/utils/types";
-import { FaEdit } from "react-icons/fa";
+import { FaBookOpen, FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
 type GridBookCardProps = CommonBookCardProps;
@@ -24,7 +24,7 @@ const GridBookCard = ({
   onCloseDelete,
 }: GridBookCardProps) => {
   return (
-    <div className="bg-white p-7 min-h-80 rounded-lg shadow-md hover:shadow-lg transition-shadow relative flex flex-col">
+    <div className="group bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-gray-200 relative overflow-hidden">
       {/* Top Action Menu */}
       <div className="absolute top-1.5 right-0 menu-container">
         <button
@@ -33,9 +33,9 @@ const GridBookCard = ({
         >
           <svg
             className="w-5 h-5"
+            viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            viewBox="0 0 24 24"
           >
             <path
               strokeLinecap="round"
@@ -47,78 +47,97 @@ const GridBookCard = ({
         </button>
 
         {isMenuOpen && (
-          <div className="absolute right-2 mt-0 w-32 bg-white rounded-md shadow-lg py-1 z-10 border border-gray-100">
+          <div className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-xl py-2 z-10 border border-gray-100">
             <button
-              className="w-full px-4 py-2 text-sm text-left hover:bg-gray-100 flex items-center"
+              className="w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2 transition-colors"
               onClick={() => {
                 onEdit();
                 onMenuToggle();
               }}
             >
-              <FaEdit className="mr-2 text-gray-600" />
-              Edit
+              <FaEdit className="text-gray-500" />
+              Edit Book
             </button>
             <button
-              className="w-full px-4 py-2 text-sm text-left hover:bg-gray-100 text-red-600 flex items-center"
+              className="w-full px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2 transition-colors"
               onClick={() => {
                 onDelete();
                 onMenuToggle();
               }}
             >
-              <MdDelete className="mr-2 text-red-600" />
+              <MdDelete className="text-red-600" />
               Delete
             </button>
           </div>
         )}
       </div>
 
+      {/* Book Cover Placeholder */}
+      <div className="mb-4 relative h-48 bg-gray-50 rounded-lg overflow-hidden">
+        <div className="absolute inset-0 flex items-center justify-center text-gray-300">
+          <FaBookOpen className="w-12 h-12" />
+        </div>
+      </div>
+
       {/* Content Section */}
-      <div className="flex-grow mt-1">
-        <div className="flex justify-between items-start mb-2 gap-2">
-          <h3 className="font-bold text-lg truncate flex-grow">{book.title}</h3>
+      <div className="space-y-3">
+        <div className="flex items-start justify-between gap-2">
+          <h3 className="font-medium text-gray-900 text-lg truncate">
+            {book.title}
+          </h3>
           <span
-            className={`text-sm px-2 py-1 rounded-full whitespace-nowrap ${
+            className={`text-xs px-2.5 py-1 rounded-full ${
               book.status === "Finished"
-                ? "bg-green-100 text-green-800"
+                ? "bg-green-50 text-green-700 border border-green-100"
                 : book.status === "Reading"
-                ? "bg-yellow-100 text-yellow-800"
-                : "bg-red-100 text-red-800"
+                ? "bg-blue-50 text-blue-700 border border-blue-100"
+                : "bg-gray-100 text-gray-600 border border-gray-200"
             }`}
           >
             {book.status}
           </span>
         </div>
 
-        <p className="text-gray-600 truncate">{book.author}</p>
-        <p className="text-sm text-purple-600">{book.genre}</p>
-        <p className="text-gray-500 mb-3">{book.totalPages} pages</p>
+        <div className="space-y-1">
+          <p className="text-sm text-gray-600 truncate">{book.author}</p>
+          <p className="text-xs text-gray-500 font-medium">{book.genre}</p>
+          <p className="text-xs text-gray-400">{book.totalPages} pages</p>
+        </div>
 
-        <div className="mb-3">
-          <div className="w-full bg-gray-200 rounded-full h-2">
+        {/* Progress Section */}
+        <div className="pt-3">
+          <div className="flex items-center justify-between text-sm mb-1.5">
+            <span className="text-gray-500">Progress</span>
+            <span className="font-medium text-gray-700">{progress}%</span>
+          </div>
+          <div className="w-full bg-gray-100 rounded-full h-1.5">
             <div
-              className="bg-purple-600 rounded-full h-2"
+              className={`${
+                book.status === "Finished"
+                  ? "bg-green-500"
+                  : book.status === "Reading"
+                  ? "bg-blue-500"
+                  : "bg-gray-300"
+              } rounded-full h-1.5 transition-all duration-300`}
               style={{ width: `${progress}%` }}
             />
           </div>
-          <div className="flex justify-between text-sm mt-1">
-            <span>Progress: {progress}%</span>
-            <span>
-              Page {book.currentPage || 0} of {book.totalPages}
-            </span>
+          <div className="text-xs text-gray-500 mt-1.5">
+            Page {book.currentPage || 0} • {book.totalPages} total
           </div>
         </div>
       </div>
 
-      {/* Bottom Actions */}
-      <div className="flex flex-col items-center mt-auto pt-4">
+      {/* Action Buttons */}
+      <div className="mt-4 space-y-2">
         {(book.status === "Reading" || book.status === "Not Started") && (
-          <div className="flex items-center gap-2 mb-3">
+          <div className="flex gap-2">
             <input
               type="number"
               min="0"
               max={book.totalPages}
               value={currentPageInput}
-              className="w-20 px-2 py-1 border rounded"
+              className="w-full px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
               onChange={(e) => {
                 const value = Math.min(
                   book.totalPages,
@@ -129,17 +148,17 @@ const GridBookCard = ({
               disabled={isUpdating}
             />
             <button
-              className="text-sm bg-blue-100 px-2 py-1 rounded hover:bg-blue-200 disabled:opacity-50"
+              className="px-3 py-1.5 text-sm bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 disabled:opacity-50 transition-colors"
               onClick={onUpdateProgress}
               disabled={isUpdating}
             >
-              {isUpdating ? "Updating..." : "Update Page"}
+              {isUpdating ? "Saving..." : "Update"}
             </button>
           </div>
         )}
 
         <button
-          className="text-sm bg-purple-100 px-3 py-1.5 rounded hover:bg-purple-200 disabled:opacity-50"
+          className="w-full py-2 text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-lg disabled:opacity-50 transition-colors"
           onClick={onMarkStatus}
           disabled={isUpdating}
         >
