@@ -7,7 +7,7 @@ import { Book } from "@/utils/types";
 export const useBooks = () => {
     const { user } = useAuthContext();
 
-    const addBook = async (formData: { title: string; author: string; genre: string; totalPages: string }) => {
+    const addBook = async (formData: { title: string; author: string; genre: string; totalPages: string, imageURL: string }) => {
         try {
             await addDoc(collection(db, "books"), {
                 title: formData.title.trim(),
@@ -18,6 +18,7 @@ export const useBooks = () => {
                 status: "Not Started",
                 uid: user?.uid,
                 createdAt: serverTimestamp(),
+                imageURL: formData.imageURL || null,
             });
             toast.success("Book added successfully!");
             return true;

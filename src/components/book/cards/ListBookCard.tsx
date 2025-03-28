@@ -24,7 +24,7 @@ function ListBookCard({
   onCloseDelete,
 }: ListBookCardProps) {
   return (
-    <div className="group bg-white p-6 w-full rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-gray-200 relative overflow-hidden flex items-center gap-6">
+    <div className="group bg-white p-6 w-full rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-gray-200 relative overflow-hidden flex items-center gap-6 h-full">
       {/* Top Action Menu */}
       <div className="absolute top-1.5 right-0 menu-container">
         <button
@@ -121,7 +121,7 @@ function ListBookCard({
         </div>
 
         {/* Combined Action Buttons Container */}
-        <div className="space-y-2 mt-4">
+        <div className="space-y-2 mt-4 min-h-[76px] flex flex-col justify-end">
           {(book.status === "Reading" || book.status === "Not Started") && (
             <div className="flex gap-2">
               <input
@@ -161,10 +161,24 @@ function ListBookCard({
       </div>
 
       {/* Book Cover Placeholder - Right side */}
-      <div className="relative h-48 w-32 bg-gray-50 rounded-lg overflow-hidden shrink-0">
-        <div className="absolute inset-0 flex items-center justify-center text-gray-300">
-          <FaBookOpen className="w-12 h-12" />
-        </div>
+      <div className="mb-4 relative h-64 w-48 bg-gray-50 rounded-lg overflow-hidden">
+        {book.imageURL ? (
+          <img
+            src={book.imageURL}
+            alt={`Cover of ${book.title}`}
+            className="w-48 h-64 object-fit"
+            onError={(e) => {
+              // Fallback to default if image fails to load
+              e.currentTarget.style.display = "none";
+            }}
+          />
+        ) : (
+          <div className="relative h-64 w-48 bg-gray-50 rounded-lg overflow-hidden shrink-0">
+            <div className="absolute inset-0 flex items-center justify-center text-gray-300">
+              <FaBookOpen className="w-12 h-12" />
+            </div>
+          </div>
+        )}
       </div>
 
       {isEditModalOpen && (

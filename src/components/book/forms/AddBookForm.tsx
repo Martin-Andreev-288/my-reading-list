@@ -14,15 +14,44 @@ function AddBookForm({ onSuccess }: AddBookFormProps) {
     author: "",
     genre: "",
     totalPages: "",
+    coverInput: "", // Combined field for ISBN/URL
   });
 
   const { addBook } = useBooks();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const success = await addBook(formData);
+
+    // Helper function to check if input is URL
+    const isURL = (str: string) => {
+      try {
+        new URL(str);
+        return true;
+      } catch {
+        return false;
+      }
+    };
+
+    // Generate appropriate image URL
+    const imageURL = formData.coverInput
+      ? isURL(formData.coverInput)
+        ? formData.coverInput.trim()
+        : `https://covers.openlibrary.org/b/isbn/${formData.coverInput.trim()}-L.jpg`
+      : "";
+
+    const success = await addBook({
+      ...formData,
+      imageURL,
+    });
+
     if (success) {
-      setFormData({ title: "", author: "", genre: "", totalPages: "" });
+      setFormData({
+        title: "",
+        author: "",
+        genre: "",
+        totalPages: "",
+        coverInput: "",
+      });
       onSuccess?.();
     }
   };
@@ -68,7 +97,15 @@ function AddBookForm({ onSuccess }: AddBookFormProps) {
           value={formData.totalPages}
           onChange={handleTotalPagesChange}
         />
-
+        <BookInputField
+          label="Cover Image (ISBN or URL)"
+          placeholder="Enter ISBN or paste image URL"
+          value={formData.coverInput}
+          onChange={(e) =>
+            setFormData({ ...formData, coverInput: e.target.value })
+          }
+          tooltip="Find ISBN on book's back cover or online retailers/google OR paste direct image URL."
+        />
         <button
           type="submit"
           className="w-full bg-gray-800 text-white py-2 px-4 rounded hover:bg-purple-700"

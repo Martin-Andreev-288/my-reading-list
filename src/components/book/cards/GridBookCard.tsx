@@ -74,9 +74,21 @@ const GridBookCard = ({
 
       {/* Book Cover Placeholder */}
       <div className="mb-4 relative h-48 bg-gray-50 rounded-lg overflow-hidden">
-        <div className="absolute inset-0 flex items-center justify-center text-gray-300">
-          <FaBookOpen className="w-12 h-12" />
-        </div>
+        {book.imageURL ? (
+          <img
+            src={book.imageURL}
+            alt={`Cover of ${book.title}`}
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              // Fallback to default if image fails to load
+              e.currentTarget.style.display = "none";
+            }}
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center text-gray-300">
+            <FaBookOpen className="w-12 h-12" />
+          </div>
+        )}
       </div>
 
       {/* Content Section */}
@@ -129,7 +141,7 @@ const GridBookCard = ({
       </div>
 
       {/* Action Buttons */}
-      <div className="mt-4 space-y-2">
+      <div className="mt-4 space-y-2 min-h-[76px] flex flex-col justify-end">
         {(book.status === "Reading" || book.status === "Not Started") && (
           <div className="flex gap-2">
             <input

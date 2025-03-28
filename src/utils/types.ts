@@ -8,6 +8,7 @@ export type Book = {
   status: "Not Started" | "Reading" | "Finished";
   userId: string;
   createdAt: Date;
+  imageURL?: string;
 };
 
 export type CommonBookCardProps = {
