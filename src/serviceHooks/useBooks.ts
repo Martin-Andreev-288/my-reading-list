@@ -36,8 +36,8 @@ export const useBooks = () => {
             const updateData: Partial<Book> = {};
 
             if (updates.title) updateData.title = updates.title.trim();
-            if (updates.author) updateData.author = updates.author.trim() || "Unknown author";
-            if (updates.genre) updateData.genre = updates.genre.trim() || "Unknown genre";
+            if (updates.author) { updateData.author = updates.author.trim() } else { updateData.author = "Unknown author" };
+            if (updates.genre) { updateData.genre = updates.genre.trim() } else { updateData.genre = "Unknown genre" };
             if (updates.totalPages) {
                 updateData.totalPages = updates.totalPages;
                 // Handle current page adjustment if total pages change
