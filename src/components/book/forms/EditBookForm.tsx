@@ -18,6 +18,7 @@ function EditBookForm({ book, onSuccess }: EditBookFormProps) {
     author: book.author,
     genre: book.genre,
     totalPages: book.totalPages.toString(),
+    coverInput: book.imageURL,
   });
 
   useEffect(() => {
@@ -26,6 +27,7 @@ function EditBookForm({ book, onSuccess }: EditBookFormProps) {
       author: book.author,
       genre: book.genre,
       totalPages: book.totalPages.toString(),
+      coverInput: book.imageURL,
     });
   }, [book]);
 
@@ -37,13 +39,15 @@ function EditBookForm({ book, onSuccess }: EditBookFormProps) {
       author: formData.author.trim(),
       genre: formData.genre.trim(),
       totalPages: parseInt(formData.totalPages),
+      imageURL: formData.coverInput?.trim(),
     };
 
     const hasChanges =
       updates.title !== book.title ||
       updates.author !== book.author ||
       updates.genre !== book.genre ||
-      updates.totalPages !== book.totalPages;
+      updates.totalPages !== book.totalPages ||
+      updates.imageURL !== book.imageURL;
 
     if (!hasChanges) {
       toast.error("No changes detected");
@@ -89,6 +93,15 @@ function EditBookForm({ book, onSuccess }: EditBookFormProps) {
           required
           value={formData.totalPages}
           onChange={handleTotalPagesChange}
+        />
+
+        <BookInputField
+          label="Cover Image (ISBN or URL)"
+          placeholder="Enter ISBN or paste image URL"
+          onChange={(e) =>
+            setFormData({ ...formData, coverInput: e.target.value })
+          }
+          tooltip="Find ISBN on book's back cover or online retailers/google OR paste direct image URL."
         />
 
         <button

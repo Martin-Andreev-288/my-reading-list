@@ -3,6 +3,7 @@ import { db } from "@/firebase/config";
 import { addDoc, getDoc, collection, deleteDoc, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { toast } from "sonner";
 import { Book } from "@/utils/types";
+import { isURL, validateOpenLibraryISBN } from "@/utils/helpers";
 
 export const useBooks = () => {
     const { user } = useAuthContext();
@@ -48,6 +49,23 @@ export const useBooks = () => {
                 } else if (updateData.currentPage > 0) {
                     updateData.status = "Reading";
                 }
+            }
+            if (updates.imageURL) {
+                const imageURL = updates.imageURL
+                    ? isURL(updates.imageURL)
+                        ? updates.imageURL.trim()
+                        : `https://covers.openlibrary.org/b/isbn/${updates.imageURL.trim()}-L.jpg`
+                    : "";
+
+                if (!validateOpenLibraryISBN(imageURL)) {
+                    toast.error("Invalid URL (must start with 'https://') or ISBN format (must be 10 or 13 digits)");
+                    return false;
+                }
+                updateData.imageURL = updates.imageURL
+                    ? isURL(updates.imageURL)
+                        ? updates.imageURL.trim()
+                        : `https://covers.openlibrary.org/b/isbn/${updates.imageURL.trim()}-L.jpg`
+                    : "";
             }
 
             await updateDoc(bookRef, updateData);

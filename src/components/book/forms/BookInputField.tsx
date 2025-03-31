@@ -4,7 +4,7 @@ type InputFieldProps = {
   label: string;
   placeholder?: string;
   type?: string;
-  value: string;
+  value?: string;
   required?: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   tooltip?: string;

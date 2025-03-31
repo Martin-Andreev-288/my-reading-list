@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { BookInputField } from "@/components";
 import { useBooks } from "@/serviceHooks/useBooks";
+import { isURL, validateOpenLibraryISBN } from "@/utils/helpers";
+import { toast } from "sonner";
 
 type AddBookFormProps = {
   onSuccess?: () => void;
@@ -22,22 +24,31 @@ function AddBookForm({ onSuccess }: AddBookFormProps) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Helper function to check if input is URL
-    const isURL = (str: string) => {
-      try {
-        new URL(str);
-        return true;
-      } catch {
-        return false;
-      }
-    };
-
     // Generate appropriate image URL
     const imageURL = formData.coverInput
       ? isURL(formData.coverInput)
         ? formData.coverInput.trim()
         : `https://covers.openlibrary.org/b/isbn/${formData.coverInput.trim()}-L.jpg`
       : "";
+
+    if (
+      imageURL.startsWith("https://covers.openlibrary.org") &&
+      !validateOpenLibraryISBN(imageURL)
+    ) {
+      toast.error(
+        "Invalid URL (must start with 'https://') or ISBN format (must be 10 or 13 digits)"
+      );
+      return;
+    }
+
+    // Validate ISBN if using Open Library URL
+    if (
+      imageURL.startsWith("https://covers.openlibrary.org") &&
+      !validateOpenLibraryISBN(imageURL)
+    ) {
+      toast.error("Invalid ISBN format (must be 10 or 13 digits) or URL");
+      return;
+    }
 
     const success = await addBook({
       ...formData,
