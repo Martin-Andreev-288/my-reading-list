@@ -1,5 +1,6 @@
 import { DeleteBookFormModal, EditBookFormModal } from "@/components";
 import { type CommonBookCardProps } from "@/utils/types";
+import { useState } from "react";
 import { FaBookOpen, FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
@@ -23,6 +24,8 @@ const GridBookCard = ({
   onCloseEdit,
   onCloseDelete,
 }: GridBookCardProps) => {
+  const [imageError, setImageError] = useState(false);
+
   return (
     <div className="group bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-gray-200 relative overflow-hidden">
       {/* Top Action Menu */}
@@ -74,15 +77,12 @@ const GridBookCard = ({
 
       {/* Book Cover Placeholder */}
       <div className="mb-4 relative h-48 bg-gray-50 rounded-lg overflow-hidden">
-        {book.imageURL ? (
+        {book.imageURL && !imageError ? (
           <img
             src={book.imageURL}
             alt={`Cover of ${book.title}`}
             className="w-full h-full object-cover"
-            onError={(e) => {
-              // Fallback to default if image fails to load
-              e.currentTarget.style.display = "none";
-            }}
+            onError={() => setImageError(true)}
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center text-gray-300">
