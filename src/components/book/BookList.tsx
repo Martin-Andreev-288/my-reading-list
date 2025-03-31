@@ -1,13 +1,15 @@
 import { type Book } from "@/utils/types";
 import { useMemo, useState } from "react";
 import { NoMatchingBooks, BookControls, CardsContainer } from "@/components";
+import { Button } from "../ui/button";
+import { LayoutGrid, List } from "lucide-react";
 
 type BookListProps = {
   books: Book[];
 };
 
 function BookList({ books }: BookListProps) {
-  const [isGridView, setIsGridView] = useState(true);
+  const [layout, setLayout] = useState<"grid" | "list">("grid");
   const [sortBy, setSortBy] = useState<"a-z" | "z-a">("a-z");
   const [filterBy, setFilterBy] = useState<
     "all" | "not-started" | "reading" | "finished"
@@ -62,13 +64,29 @@ function BookList({ books }: BookListProps) {
         onFilterChange={setFilterBy}
       />
 
-      <div className="flex justify-end mb-4">
-        <button
-          onClick={() => setIsGridView(!isGridView)}
-          className="bg-purple-100 px-4 py-2 rounded-lg hover:bg-purple-200 transition-colors"
+      <div className="flex justify-end w-28 mb-4 gap-2 backdrop-blur-sm p-2 pr-3 rounded-full bg-white/50 shadow-sm ml-auto">
+        <Button
+          onClick={() => setLayout("grid")}
+          variant={layout === "grid" ? "default" : "ghost"}
+          size="icon"
+          className="relative group hover:bg-purple-100 transition-colors"
         >
-          {isGridView ? "Switch to List" : "Switch to Grid"}
-        </button>
+          <LayoutGrid className="w-5 h-5" />
+          {layout === "grid" && (
+            <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-4 h-1 bg-purple-600 rounded-full" />
+          )}
+        </Button>
+        <Button
+          onClick={() => setLayout("list")}
+          variant={layout === "list" ? "default" : "ghost"}
+          size="icon"
+          className="relative group hover:bg-purple-100 transition-colors"
+        >
+          <List className="w-5 h-5" />
+          {layout === "list" && (
+            <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-4 h-1 bg-purple-600 rounded-full" />
+          )}
+        </Button>
       </div>
 
       {processedBooks.length === 0 ? (
@@ -76,7 +94,7 @@ function BookList({ books }: BookListProps) {
       ) : (
         <div
           className={
-            isGridView
+            layout === "grid"
               ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-center"
               : "flex flex-col items-center space-y-4"
           }
@@ -85,7 +103,7 @@ function BookList({ books }: BookListProps) {
             <CardsContainer
               key={book.id}
               book={book}
-              variant={isGridView ? "grid" : "list"}
+              variant={layout === "grid" ? "grid" : "list"}
             />
           ))}
         </div>
