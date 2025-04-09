@@ -6,6 +6,7 @@ import {
   AddBookFormModal,
   EmptyLibraryState,
   BookStatistics,
+  BackToTopBtn,
 } from "@/components";
 import { Button } from "@/components/ui/button";
 import { FaPlus } from "react-icons/fa";
@@ -55,6 +56,7 @@ function Home() {
     >
       <Navbar />
       <main className="flex-1">
+        <BackToTopBtn />
         <div className="max-w-5xl mx-auto my-0">
           {books && (
             <>

@@ -1,4 +1,5 @@
 export { default as ProtectedRoute } from "./auth/ProtectedRoute";
+export { default as BackToTopBtn } from "./backToTopButton/BackToTopBtn";
 export { default as UnprotectedRoute } from "./auth/UnprotectedRoute";
 export { default as CardsContainer } from "./book/cards/CardsContainer";
 export { default as GridBookCard } from "./book/cards/GridBookCard";
