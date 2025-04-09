@@ -6,7 +6,7 @@ function Navbar() {
   const { user } = useAuthContext();
 
   return (
-    <nav className="bg-white shadow-sm rounded-lg mx-4 mt-4">
+    <nav className="bg-white shadow-sm rounded-lg mx-4 mt-4 sticky top-1 z-50">
       <div className="max-w-7xl mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
