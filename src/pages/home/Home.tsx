@@ -16,7 +16,7 @@ import { BACKGROUND_IMAGES } from "@/assets";
 
 function Home() {
   const { user } = useAuthContext();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddBookModalOpen, setIsAddBookModalOpen] = useState(false);
   const bgImage = useRef(
     BACKGROUND_IMAGES[Math.floor(Math.random() * BACKGROUND_IMAGES.length)]
   ).current;
@@ -32,10 +32,10 @@ function Home() {
         <Navbar />
         <main className="flex-1">
           <div className="max-w-5xl mx-auto my-0">
-            <EmptyLibraryState onAddBook={() => setIsModalOpen(true)} />
+            <EmptyLibraryState onAddBook={() => setIsAddBookModalOpen(true)} />
           </div>
-          {isModalOpen && (
-            <AddBookFormModal onClose={() => setIsModalOpen(false)} />
+          {isAddBookModalOpen && (
+            <AddBookFormModal onClose={() => setIsAddBookModalOpen(false)} />
           )}
         </main>
         <Footer />
@@ -65,7 +65,7 @@ function Home() {
                 <Button
                   variant="outline"
                   className="mt-10"
-                  onClick={() => setIsModalOpen(true)}
+                  onClick={() => setIsAddBookModalOpen(true)}
                 >
                   <FaPlus />
                   Add new book 📖
@@ -76,8 +76,8 @@ function Home() {
           )}
         </div>
 
-        {isModalOpen && (
-          <AddBookFormModal onClose={() => setIsModalOpen(false)} />
+        {isAddBookModalOpen && (
+          <AddBookFormModal onClose={() => setIsAddBookModalOpen(false)} />
         )}
       </main>
       <Footer />
