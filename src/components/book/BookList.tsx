@@ -1,12 +1,16 @@
 import { type Book } from "@/utils/types";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useEffect, useCallback } from "react";
+import clsx from "clsx";
 import { NoMatchingBooks, BookControls, CardsContainer } from "@/components";
 import { Button } from "../ui/button";
 import { LayoutGrid, List } from "lucide-react";
+import useLazyLoad from "@/hooks/useLazyLoad";
 
 type BookListProps = {
   books: Book[];
 };
+
+const NUM_PER_PAGE = 6;
 
 function BookList({ books }: BookListProps) {
   const [layout, setLayout] = useState<"grid" | "list">("grid");
@@ -15,6 +19,7 @@ function BookList({ books }: BookListProps) {
     "all" | "not-started" | "reading" | "finished"
   >("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const triggerRef = useRef(null);
 
   const processedBooks = useMemo(() => {
     // Create a copy to avoid mutating original array
@@ -55,6 +60,27 @@ function BookList({ books }: BookListProps) {
     return filteredBooks;
   }, [books, sortBy, filterBy, searchQuery]);
 
+  const onGrabData = useCallback(
+    async (currentPage: number) => {
+      const startIndex = (currentPage - 1) * NUM_PER_PAGE;
+      const endIndex = startIndex + NUM_PER_PAGE;
+      return processedBooks.slice(startIndex, endIndex);
+    },
+    [processedBooks]
+  );
+
+  const { data, reset } = useLazyLoad<Book>({
+    triggerRef,
+    onGrabData,
+    options: {},
+  });
+
+  // Reset scroll when filters/sort/search change
+  useEffect(() => {
+    console.log("Endless loop testing");
+    reset();
+  }, [processedBooks, reset]); // processedBooks changes on any filter/sort/search
+
   return (
     <div className="pt-4 pb-4">
       <BookControls
@@ -89,7 +115,7 @@ function BookList({ books }: BookListProps) {
         </Button>
       </div>
 
-      {processedBooks.length === 0 ? (
+      {data.length === 0 ? (
         <NoMatchingBooks />
       ) : (
         <div
@@ -99,7 +125,7 @@ function BookList({ books }: BookListProps) {
               : "flex flex-col items-center space-y-4"
           }
         >
-          {processedBooks.map((book) => (
+          {data.map((book) => (
             <CardsContainer
               key={book.id}
               book={book}
@@ -108,6 +134,9 @@ function BookList({ books }: BookListProps) {
           ))}
         </div>
       )}
+      <div ref={triggerRef} className={clsx("trigger")}>
+        {/* {hasMore && <div className="text-center">"Loading books..."</div>} */}
+      </div>
     </div>
   );
 }
