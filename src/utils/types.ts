@@ -7,7 +7,6 @@ export type Book = {
   currentPage?: number;
   status: "Not Started" | "Reading" | "Finished";
   userId: string;
-  createdAt: Date;
   imageURL?: string;
 };
 

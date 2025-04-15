@@ -134,9 +134,7 @@ function BookList({ books }: BookListProps) {
           ))}
         </div>
       )}
-      <div ref={triggerRef} className={clsx("trigger")}>
-        {/* {hasMore && <div className="text-center">"Loading books..."</div>} */}
-      </div>
+      <div ref={triggerRef} className={clsx("trigger")}></div>
     </div>
   );
 }

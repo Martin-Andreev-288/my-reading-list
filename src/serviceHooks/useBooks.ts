@@ -1,6 +1,6 @@
 import { useAuthContext } from "@/serviceHooks/useAuthContext";
 import { db } from "@/firebase/config";
-import { addDoc, getDoc, collection, deleteDoc, doc, serverTimestamp, updateDoc } from "firebase/firestore";
+import { addDoc, getDoc, collection, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { toast } from "sonner";
 import { Book } from "@/utils/types";
 import { isURL, validateOpenLibraryISBN } from "@/utils/helpers";
@@ -18,7 +18,6 @@ export const useBooks = () => {
                 currentPage: 0,
                 status: "Not Started",
                 uid: user?.uid,
-                createdAt: serverTimestamp(),
                 imageURL: formData.imageURL || null,
             });
             toast.success("Book added successfully!");
