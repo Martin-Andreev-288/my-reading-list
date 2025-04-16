@@ -18,7 +18,8 @@ function BookList({ books }: BookListProps) {
   const [filterBy, setFilterBy] = useState<
     "all" | "not-started" | "reading" | "finished"
   >("all");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [displaySearchQuery, setDisplaySearchQuery] = useState("");
+  const [appliedSearchQuery, setAppliedSearchQuery] = useState("");
   const triggerRef = useRef(null);
 
   const processedBooks = useMemo(() => {
@@ -43,9 +44,9 @@ function BookList({ books }: BookListProps) {
       });
     }
 
-    // Search filter by titlem author, or genre
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase().trim();
+    // Search filter by title, author, or genre
+    if (appliedSearchQuery.trim()) {
+      const query = appliedSearchQuery.toLowerCase().trim();
       filteredBooks = filteredBooks.filter((book) => {
         const searchString = [
           book.title.toLowerCase(),
@@ -58,7 +59,7 @@ function BookList({ books }: BookListProps) {
     }
 
     return filteredBooks;
-  }, [books, sortBy, filterBy, searchQuery]);
+  }, [books, sortBy, filterBy, appliedSearchQuery]);
 
   const onGrabData = useCallback(
     async (currentPage: number) => {
@@ -84,8 +85,9 @@ function BookList({ books }: BookListProps) {
   return (
     <div className="pt-4 pb-4">
       <BookControls
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
+        searchQuery={displaySearchQuery}
+        onSearchChange={setDisplaySearchQuery}
+        onSearchApply={() => setAppliedSearchQuery(displaySearchQuery)}
         onSortChange={setSortBy}
         onFilterChange={setFilterBy}
       />

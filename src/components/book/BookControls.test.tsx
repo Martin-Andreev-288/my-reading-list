@@ -6,6 +6,7 @@ import BookControls from "./BookControls";
 describe("BookControls", () => {
   const mockHandlers = {
     onSearchChange: vi.fn(),
+    onSearchApply: vi.fn(),
     onSortChange: vi.fn(),
     onFilterChange: vi.fn(),
   };
