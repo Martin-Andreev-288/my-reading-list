@@ -1,3 +1,5 @@
+import { Search } from "lucide-react";
+
 type BookControlsProps = {
   searchQuery: string;
   onSearchChange: (query: string) => void;
@@ -25,19 +27,28 @@ function BookControls({
         >
           Search Books
         </label>
-        <input
-          type="text"
-          id="search"
-          placeholder="Search by title, author, or genre..."
-          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
-          value={searchQuery}
-          onChange={(e) => onSearchChange(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              onSearchApply(); // Triggered only on Enter
-            }
-          }}
-        />
+        <div className="relative">
+          <input
+            type="text"
+            id="search"
+            placeholder="Search by title, author, or genre..."
+            className="w-full px-4 py-2 pr-10 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+            value={searchQuery}
+            onChange={(e) => onSearchChange(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                onSearchApply();
+              }
+            }}
+          />
+          <button
+            onClick={onSearchApply}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-purple-500 transition-colors"
+            aria-label="Search"
+          >
+            <Search className="w-5 h-5" />
+          </button>
+        </div>
       </div>
 
       {/* Sort Dropdown */}
