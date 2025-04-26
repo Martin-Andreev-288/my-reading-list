@@ -11,7 +11,7 @@ describe("BookControls", () => {
     onFilterChange: vi.fn(),
   };
 
-  it("handles search input changes", async () => {
+  it("handles search input changes without auto-applying", async () => {
     const user = userEvent.setup();
     render(<BookControls searchQuery="" {...mockHandlers} />);
 
@@ -20,9 +20,31 @@ describe("BookControls", () => {
     );
     await user.type(input, "test query");
 
-    expect(mockHandlers.onSearchChange).toHaveBeenCalledWith("t");
-    expect(mockHandlers.onSearchChange).toHaveBeenLastCalledWith("y");
+    expect(mockHandlers.onSearchApply).not.toHaveBeenCalled();
     expect(mockHandlers.onSearchChange).toHaveBeenCalledTimes(10);
+  });
+
+  it("triggers search on Enter key press", async () => {
+    const user = userEvent.setup();
+    render(<BookControls searchQuery="test" {...mockHandlers} />);
+
+    const input = screen.getByPlaceholderText(
+      "Search by title, author, or genre..."
+    );
+    await user.type(input, "{Enter}");
+
+    expect(mockHandlers.onSearchApply).toHaveBeenCalledTimes(1);
+  });
+
+  it("triggers search on icon click", async () => {
+    const user = userEvent.setup();
+    mockHandlers.onSearchApply.mockClear();
+
+    render(<BookControls searchQuery="test" {...mockHandlers} />);
+    const icon = screen.getByRole("button", { name: /search/i });
+    await user.click(icon);
+
+    expect(mockHandlers.onSearchApply).toHaveBeenCalledTimes(1);
   });
 
   it("handles sorting changes", async () => {
