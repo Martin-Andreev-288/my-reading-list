@@ -36,6 +36,14 @@ npm install
 npm run dev
 ```
 
+## Running Tests
+
+To run unit and integration tests, you can use the following command:
+
+```
+npm run test
+```
+
 ## App Folder Structure
 The main app folders are:
 
@@ -59,4 +67,4 @@ The main app folders are:
 
 ## Project Tool Links
 - [Project deploy in Vercel](https://my-reading-list-eight.vercel.app/)
-- [Project demo video]()
+- [Project demo video](https://youtu.be/2zxu3yO_1MU)
